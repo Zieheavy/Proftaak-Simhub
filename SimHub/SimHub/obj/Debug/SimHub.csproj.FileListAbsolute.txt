@@ -1,0 +1,10 @@
+D:\proftaak\SimHub\SimHub\bin\Debug\SimHub.exe.config
+D:\proftaak\SimHub\SimHub\bin\Debug\SimHub.exe
+D:\proftaak\SimHub\SimHub\bin\Debug\SimHub.pdb
+D:\proftaak\SimHub\SimHub\obj\Debug\SimHub.csprojResolveAssemblyReference.cache
+D:\proftaak\SimHub\SimHub\obj\Debug\SimHub.Form1.resources
+D:\proftaak\SimHub\SimHub\obj\Debug\SimHub.Properties.Resources.resources
+D:\proftaak\SimHub\SimHub\obj\Debug\SimHub.csproj.GenerateResource.Cache
+D:\proftaak\SimHub\SimHub\obj\Debug\SimHub.exe
+D:\proftaak\SimHub\SimHub\obj\Debug\SimHub.pdb
+D:\proftaak\SimHub\SimHub\obj\Debug\UdpTest.Form1.resources
