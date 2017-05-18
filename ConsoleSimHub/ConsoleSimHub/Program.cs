@@ -60,45 +60,54 @@ namespace ConsoleSimHub
                     IPEndPoint anyIP = new IPEndPoint(IPAddress.Any, 20777);
                     byte[] data = client.Receive(ref anyIP);
                     //#region Gear
-                    //int posGear = 132;
-                    //float tTime = (data[posGear] & 0xff) + (data[posGear + 1] & 0xff) + (data[posGear + 2] & 0xff) + (data[posGear + 3] & 0xff);
-                    //if (tTime == 0)
+                    //int posgear = 132;
+                    //float gearing = (data[posgear] & 0xff) + (data[posgear + 1] & 0xff) + (data[posgear + 2] & 0xff) + (data[posgear + 3] & 0xff);
+                    //console.writeline(gearing);
+                    //if (ttime == 0)
                     //{
-                    //    Console.WriteLine("Gear: N");
+                    //    console.writeline("gear: n");
                     //}
-                    //else if (tTime == 64)
+                    //else if (ttime == 64)
                     //{
-                    //    Console.WriteLine("Gear: 2");
+                    //    console.writeline("gear: 2");
                     //}
-                    //else if (tTime == 97)
+                    //else if (ttime == 97)
                     //{
-                    //    Console.WriteLine("Gear: R");
+                    //    console.writeline("gear: r");
                     //}
-                    //else if (tTime == 128)
+                    //else if (ttime == 128)
                     //{
-                    //    Console.WriteLine("Gear: 3");
+                    //    console.writeline("gear: 3");
                     //}
-                    //else if (tTime == 191)
+                    //else if (ttime == 191)
                     //{
-                    //    Console.WriteLine("Gear: 1");
+                    //    console.writeline("gear: 1");
                     //}
-                    //else if (tTime == 192)
+                    //else if (ttime == 192)
                     //{
-                    //    Console.WriteLine("Gear: 4");
+                    //    console.writeline("gear: 4");
                     //}
-                    //else if (tTime == 224)
+                    //else if (ttime == 224)
                     //{
-                    //    Console.WriteLine("Gear: 5");
+                    //    console.writeline("gear: 5");
                     //}
                     //else
                     //{
-                    //    Console.WriteLine(tTime);
+                    //    console.writeline(ttime);
                     //}
                     //#endregion
-                    #region 28
-                    int posSpeed = 132;
-                    float speed = (data[posSpeed] & 0xff) + (data[posSpeed + 1] & 0xff) + (data[posSpeed + 2] & 0xff) + (data[posSpeed + 3] & 0xff);
-                    Console.WriteLine(">>" +speed);
+                    //#region Speed(28)
+                    //int posSpeed = 132;
+                    //float speed = (data[posSpeed] & 0xff) | (data[posSpeed + 1] & 0xff) | (data[posSpeed + 2] & 0xff) | (data[posSpeed + 3] & 0xff);
+                    //Console.WriteLine(">>" + speed);
+                    //#endregion
+                    #region Brake
+                    int posBrake = 124;
+                    float brakes = (data[posBrake] & 0xff) | ((data[posBrake + 1] & 0xff) << 8) | ((data[posBrake + 2] & 0xff) << 16) | ((data[posBrake + 3] & 0xff) << 24);
+                    if (brakes >= 0)
+                    {
+                        Console.WriteLine("Braking");
+                    }
                     #endregion
                 }
                 catch (Exception err)
