@@ -104,7 +104,8 @@ namespace ConsoleSimHub
                     #region Brake
                     int posBrake = 124;
                     float brakes = (data[posBrake] & 0xff) | ((data[posBrake + 1] & 0xff) << 8) | ((data[posBrake + 2] & 0xff) << 16) | ((data[posBrake + 3] & 0xff) << 24);
-                    if (brakes >= 0)
+                    if (brakes != 0)
+                        Console.WriteLine(brakes);
                     {
                         Console.WriteLine("Braking");
                     }
