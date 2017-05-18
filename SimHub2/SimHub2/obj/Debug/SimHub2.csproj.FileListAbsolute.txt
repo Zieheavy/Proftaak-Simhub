@@ -1,9 +1,0 @@
-D:\proftaak\SimHub2\SimHub2\bin\Debug\SimHub2.exe.config
-D:\proftaak\SimHub2\SimHub2\obj\Debug\SimHub2.Form1.resources
-D:\proftaak\SimHub2\SimHub2\obj\Debug\SimHub2.Properties.Resources.resources
-D:\proftaak\SimHub2\SimHub2\obj\Debug\SimHub2.csproj.GenerateResource.Cache
-D:\proftaak\SimHub2\SimHub2\bin\Debug\SimHub2.exe
-D:\proftaak\SimHub2\SimHub2\bin\Debug\SimHub2.pdb
-D:\proftaak\SimHub2\SimHub2\obj\Debug\SimHub2.exe
-D:\proftaak\SimHub2\SimHub2\obj\Debug\SimHub2.pdb
-D:\proftaak\SimHub2\SimHub2\obj\Debug\SimHub2.csprojResolveAssemblyReference.cache
