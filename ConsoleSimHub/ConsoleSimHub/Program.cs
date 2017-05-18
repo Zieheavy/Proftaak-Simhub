@@ -59,57 +59,63 @@ namespace ConsoleSimHub
                 {
                     IPEndPoint anyIP = new IPEndPoint(IPAddress.Any, 20777);
                     byte[] data = client.Receive(ref anyIP);
-                    //#region Gear
-                    //int posgear = 132;
-                    //float gearing = (data[posgear] & 0xff) + (data[posgear + 1] & 0xff) + (data[posgear + 2] & 0xff) + (data[posgear + 3] & 0xff);
-                    //console.writeline(gearing);
-                    //if (ttime == 0)
-                    //{
-                    //    console.writeline("gear: n");
-                    //}
-                    //else if (ttime == 64)
-                    //{
-                    //    console.writeline("gear: 2");
-                    //}
-                    //else if (ttime == 97)
-                    //{
-                    //    console.writeline("gear: r");
-                    //}
-                    //else if (ttime == 128)
-                    //{
-                    //    console.writeline("gear: 3");
-                    //}
-                    //else if (ttime == 191)
-                    //{
-                    //    console.writeline("gear: 1");
-                    //}
-                    //else if (ttime == 192)
-                    //{
-                    //    console.writeline("gear: 4");
-                    //}
-                    //else if (ttime == 224)
-                    //{
-                    //    console.writeline("gear: 5");
-                    //}
-                    //else
-                    //{
-                    //    console.writeline(ttime);
-                    //}
-                    //#endregion
-                    //#region Speed(28)
-                    //int posSpeed = 132;
-                    //float speed = (data[posSpeed] & 0xff) | (data[posSpeed + 1] & 0xff) | (data[posSpeed + 2] & 0xff) | (data[posSpeed + 3] & 0xff);
-                    //Console.WriteLine(">>" + speed);
-                    //#endregion
-                    #region Brake
-                    int posBrake = 124;
-                    float brakes = (data[posBrake] & 0xff) | ((data[posBrake + 1] & 0xff) << 8) | ((data[posBrake + 2] & 0xff) << 16) | ((data[posBrake + 3] & 0xff) << 24);
-                    if (brakes != 0)
-                        Console.WriteLine(brakes);
+                    #region Gear
+                    int posgear = 132;
+                    string currentgear = "N";
+                    float gearing = (data[posgear] & 0xff) + (data[posgear + 1] & 0xff) + (data[posgear + 2] & 0xff) + (data[posgear + 3] & 0xff);
+                    if (gearing == 0)
                     {
-                        Console.WriteLine("Braking");
+                        currentgear = "N";
+                    }
+                    else if (gearing == 64)
+                    {
+                        currentgear = "2";
+                    }
+                    else if (gearing == 97)
+                    {
+                        currentgear = "R";
+                    }
+                    else if (gearing == 128)
+                    {
+                        currentgear = "3";
+                    }
+                    else if (gearing == 191)
+                    {
+                        currentgear = "1";
+                    }
+                    else if (gearing == 192)
+                    {
+                        currentgear = "4";
+                    }
+                    else if (gearing == 224)
+                    {
+                        currentgear = "5";
+                    }
+                    else
+                    {
+                        currentgear = Convert.ToString(gearing);
                     }
                     #endregion
+                    #region Speed(28)
+                    int posSpeed = 132;
+                    float speed = (data[posSpeed] & 0xff) | (data[posSpeed + 1] & 0xff) | (data[posSpeed + 2] & 0xff) | (data[posSpeed + 3] & 0xff);
+                    Console.WriteLine(">>" + speed);
+                    #endregion
+                    
+                    #region Brake
+                    int posBrake = 124;
+                    bool braking = false;
+                    float brakes = (data[posBrake] & 0xff) | ((data[posBrake + 1] & 0xff) << 8) | ((data[posBrake + 2] & 0xff) << 16) | ((data[posBrake + 3] & 0xff) << 24);
+                    if (brakes != 0)
+                    {
+                       braking = true;
+                    }
+                    else
+                    {
+                        braking = false;
+                    }
+                    #endregion
+                    Console.WriteLine("Speed: " + speed+ " KPH \n Gear: "+currentgear+" \n Braking: "+braking);
                 }
                 catch (Exception err)
                 {
