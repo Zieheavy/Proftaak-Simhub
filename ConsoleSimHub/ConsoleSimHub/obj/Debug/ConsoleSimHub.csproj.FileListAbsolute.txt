@@ -1,0 +1,5 @@
+D:\proftaak\ConsoleSimHub\ConsoleSimHub\bin\Debug\ConsoleSimHub.exe.config
+D:\proftaak\ConsoleSimHub\ConsoleSimHub\bin\Debug\ConsoleSimHub.exe
+D:\proftaak\ConsoleSimHub\ConsoleSimHub\bin\Debug\ConsoleSimHub.pdb
+D:\proftaak\ConsoleSimHub\ConsoleSimHub\obj\Debug\ConsoleSimHub.exe
+D:\proftaak\ConsoleSimHub\ConsoleSimHub\obj\Debug\ConsoleSimHub.pdb
