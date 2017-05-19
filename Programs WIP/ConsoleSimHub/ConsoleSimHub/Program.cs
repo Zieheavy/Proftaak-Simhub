@@ -11,7 +11,7 @@ using System.Threading;
 
 namespace ConsoleSimHub
 {
-    class Program
+    class zProgram
     {
         private static void Main()
         {
@@ -96,16 +96,21 @@ namespace ConsoleSimHub
                         currentgear = Convert.ToString(gearing);
                     }
                     #endregion
-                    #region Speed(28)
-                    int posSpeed = 132;
-                    float speed = (data[posSpeed] & 0xff) | (data[posSpeed + 1] & 0xff) | (data[posSpeed + 2] & 0xff) | (data[posSpeed + 3] & 0xff);
-                    Console.WriteLine(">>" + speed);
+
+                    #region Speed
+                    int posSpeed = 28;
+                    float speed = BitConverter.ToSingle(data,posSpeed);
                     #endregion
-                    
+
+                    #region RPM
+                    int posRPM = 148;
+                    float RPM = BitConverter.ToSingle(data, posRPM);
+                    #endregion
+
                     #region Brake
                     int posBrake = 124;
                     bool braking = false;
-                    float brakes = (data[posBrake] & 0xff) | ((data[posBrake + 1] & 0xff) << 8) | ((data[posBrake + 2] & 0xff) << 16) | ((data[posBrake + 3] & 0xff) << 24);
+                    float brakes = BitConverter.ToSingle(data, posBrake);
                     if (brakes != 0)
                     {
                        braking = true;
@@ -115,7 +120,27 @@ namespace ConsoleSimHub
                         braking = false;
                     }
                     #endregion
-                    Console.WriteLine("Speed: " + speed+ " KPH \n Gear: "+currentgear+" \n Braking: "+braking);
+
+                    #region Total Time
+                    int posTTime = 0;
+                    float TTime = BitConverter.ToSingle(data, posTTime);
+                    TimeSpan result = TimeSpan.FromSeconds(TTime-13);
+                    string TotalTime = result.ToString("mm':'ss");
+                    #endregion
+
+                    #region Lap Time
+                    int posLTime = 4;
+                    float LTime = BitConverter.ToSingle(data, posLTime);
+                    TimeSpan resultL = TimeSpan.FromSeconds(TTime - 13);
+                    string LapTime = resultL.ToString("mm':'ss");
+                    #endregion
+
+                    #region Pos
+                    int posPos = 144;
+                    float pos = BitConverter.ToSingle(data, posPos);
+                    #endregion
+
+                    Console.WriteLine(" Lap Time: " + LapTime + " \n Total Time: " + TotalTime + " \n Lap: " + (Math.Round(pos + 1)) + " \n Speed: " + (Math.Round(speed * 3.6, 0)) + " KPH \n RMP: " + Math.Round(RPM * 10, 0) + "\n Gear: " + currentgear + " \n Braking: " + braking+ "\n");
                 }
                 catch (Exception err)
                 {
