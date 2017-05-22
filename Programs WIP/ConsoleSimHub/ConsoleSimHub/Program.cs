@@ -17,6 +17,11 @@ namespace ConsoleSimHub
         {
             string IP = "127.0.0.1";
             int port = 20777;
+            string ComPort = "";
+
+            Console.WriteLine("please enter what comport your arduino is on");
+            ComPort = "COM" + Console.ReadLine();
+            Console.WriteLine("Your arduino is on: " + ComPort);
 
             IPEndPoint remoteEndPoint = new IPEndPoint(IPAddress.Parse(IP), port);
 
@@ -59,6 +64,8 @@ namespace ConsoleSimHub
                 {
                     IPEndPoint anyIP = new IPEndPoint(IPAddress.Any, 20777);
                     byte[] data = client.Receive(ref anyIP);
+                    //round number
+
                     #region Gear
                     int posgear = 132;
                     string currentgear = "N";

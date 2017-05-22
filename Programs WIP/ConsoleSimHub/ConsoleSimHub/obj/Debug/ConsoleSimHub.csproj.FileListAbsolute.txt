@@ -15,3 +15,9 @@ C:\Users\Maarten Jakobs\Documents\School\Proftaak\Proftaak-Simhub\Programs WIP\C
 C:\Users\Maarten Jakobs\Documents\School\Proftaak\Proftaak-Simhub\Programs WIP\ConsoleSimHub\ConsoleSimHub\bin\Debug\ConsoleSimHub.exe
 C:\Users\Maarten Jakobs\Documents\School\Proftaak\Proftaak-Simhub\Programs WIP\ConsoleSimHub\ConsoleSimHub\bin\Debug\ConsoleSimHub.pdb
 C:\Users\Maarten Jakobs\Documents\School\Proftaak\Proftaak-Simhub\Programs WIP\ConsoleSimHub\ConsoleSimHub\obj\Debug\ConsoleSimHub.csprojResolveAssemblyReference.cache
+D:\proftaak\Programs WIP\ConsoleSimHub\ConsoleSimHub\bin\Debug\ConsoleSimHub.exe.config
+D:\proftaak\Programs WIP\ConsoleSimHub\ConsoleSimHub\obj\Debug\ConsoleSimHub.exe
+D:\proftaak\Programs WIP\ConsoleSimHub\ConsoleSimHub\obj\Debug\ConsoleSimHub.pdb
+D:\proftaak\Programs WIP\ConsoleSimHub\ConsoleSimHub\bin\Debug\ConsoleSimHub.exe
+D:\proftaak\Programs WIP\ConsoleSimHub\ConsoleSimHub\bin\Debug\ConsoleSimHub.pdb
+D:\proftaak\Programs WIP\ConsoleSimHub\ConsoleSimHub\obj\Debug\ConsoleSimHub.csprojResolveAssemblyReference.cache
