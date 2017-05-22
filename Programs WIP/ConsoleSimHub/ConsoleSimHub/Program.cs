@@ -33,22 +33,22 @@ namespace ConsoleSimHub
                 {
                     System.Diagnostics.Process.Start(@"D:\STEAM\steamapps\common\DiRT 3 Complete Edition\dirt3_game.exe");
                     Console.WriteLine("launching Dirt3");
-                    Console.WriteLine("Do you want to launch DiRTTelemetryErrorFix");
-                    if (Console.ReadLine().ToLower() == "yes")
-                    {
-                        System.Diagnostics.Process.Start(@"D:\proftaak\DiRTTelemetryErrorFix_Release\DiRTTelemetryErrorFix.exe");
-                        Console.WriteLine("launching DiRTTelemetryErrorFix");
-                    }
-                    else
-                    {
-                        Console.WriteLine("You decided not to launch DiRTTelemetryErrorFix");
-                    }
+
                 }
                 else
                 {
                     Console.WriteLine("You decided not to launch dirt3");
                 }
-
+                Console.WriteLine("Do you want to launch DiRTTelemetryErrorFix");
+                if (Console.ReadLine().ToLower() == "yes")
+                {
+                    System.Diagnostics.Process.Start(@"D:\proftaak\DiRTTelemetryErrorFix_Release\DiRTTelemetryErrorFix.exe");
+                    Console.WriteLine("launching DiRTTelemetryErrorFix");
+                }
+                else
+                {
+                    Console.WriteLine("You decided not to launch DiRTTelemetryErrorFix");
+                }
             }
             else
             {
@@ -98,7 +98,11 @@ namespace ConsoleSimHub
                 {
                     IPEndPoint anyIP = new IPEndPoint(IPAddress.Any, 20777);
                     byte[] data = client.Receive(ref anyIP);
-                    //round number
+
+                    #region Round
+                    int posRound = 144;
+                    float Round = BitConverter.ToSingle(data, posRound)+1;
+                    #endregion
 
                     #region Gear
                     int posgear = 132;
@@ -131,6 +135,10 @@ namespace ConsoleSimHub
                     else if (gearing == 224)
                     {
                         currentgear = "5";
+                    }
+                    else if (gearing == 256)
+                    {
+                        currentgear = "6";
                     }
                     else
                     {
@@ -181,7 +189,7 @@ namespace ConsoleSimHub
                     float pos = BitConverter.ToSingle(data, posPos);
                     #endregion
 
-                    Console.WriteLine(" Lap Time: " + LapTime + " \n Total Time: " + TotalTime + " \n Lap: " + (Math.Round(pos + 1)) + " \n Speed: " + (Math.Round(speed * 3.6, 0)) + " KPH \n RMP: " + Math.Round(RPM * 10, 0) + "\n Gear: " + currentgear + " \n Braking: " + braking + "\n");
+                    Console.WriteLine(" Lap Time: " + LapTime + " \n Lap: " + Round + " \n Total Time: " + TotalTime + " \n Lap: " + (Math.Round(pos + 1)) + " \n Speed: " + (Math.Round(speed * 3.6, 0)) + " KPH \n RMP: " + Math.Round(RPM * 10, 0) + "\n Gear: " + currentgear + " \n Braking: " + braking + "\n");
                 }
                 catch (Exception err)
                 {
