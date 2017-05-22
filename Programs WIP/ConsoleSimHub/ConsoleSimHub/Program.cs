@@ -15,13 +15,47 @@ namespace ConsoleSimHub
     {
         private static void Main()
         {
+
             string IP = "127.0.0.1";
             int port = 20777;
             string ComPort = "";
 
-            Console.WriteLine("please enter what comport your arduino is on");
-            ComPort = "COM" + Console.ReadLine();
-            Console.WriteLine("Your arduino is on: " + ComPort);
+            #region boot up sequence
+            Console.WriteLine("Do you want to enter startup");
+            if (Console.ReadLine().ToLower() == "yes")
+            {
+                Console.WriteLine("Program starting up");
+                Console.WriteLine("please enter what comport your arduino is on");
+                ComPort = "COM" + Console.ReadLine();
+                Console.WriteLine("Your arduino is on: " + ComPort);
+                Console.WriteLine("Do you want to launch dirt 3");
+                if (Console.ReadLine().ToLower() == "yes")
+                {
+                    System.Diagnostics.Process.Start(@"D:\STEAM\steamapps\common\DiRT 3 Complete Edition\dirt3_game.exe");
+                    Console.WriteLine("launching Dirt3");
+                    Console.WriteLine("Do you want to launch DiRTTelemetryErrorFix");
+                    if (Console.ReadLine().ToLower() == "yes")
+                    {
+                        System.Diagnostics.Process.Start(@"D:\proftaak\DiRTTelemetryErrorFix_Release\DiRTTelemetryErrorFix.exe");
+                        Console.WriteLine("launching DiRTTelemetryErrorFix");
+                    }
+                    else
+                    {
+                        Console.WriteLine("You decided not to launch DiRTTelemetryErrorFix");
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("You decided not to launch dirt3");
+                }
+
+            }
+            else
+            {
+                Console.WriteLine("Exiting start up");
+            }
+            #endregion
+
 
             IPEndPoint remoteEndPoint = new IPEndPoint(IPAddress.Parse(IP), port);
 
@@ -106,7 +140,7 @@ namespace ConsoleSimHub
 
                     #region Speed
                     int posSpeed = 28;
-                    float speed = BitConverter.ToSingle(data,posSpeed);
+                    float speed = BitConverter.ToSingle(data, posSpeed);
                     #endregion
 
                     #region RPM
@@ -120,7 +154,7 @@ namespace ConsoleSimHub
                     float brakes = BitConverter.ToSingle(data, posBrake);
                     if (brakes != 0)
                     {
-                       braking = true;
+                        braking = true;
                     }
                     else
                     {
@@ -131,7 +165,7 @@ namespace ConsoleSimHub
                     #region Total Time
                     int posTTime = 0;
                     float TTime = BitConverter.ToSingle(data, posTTime);
-                    TimeSpan result = TimeSpan.FromSeconds(TTime-13);
+                    TimeSpan result = TimeSpan.FromSeconds(TTime - 13);
                     string TotalTime = result.ToString("mm':'ss");
                     #endregion
 
@@ -147,7 +181,7 @@ namespace ConsoleSimHub
                     float pos = BitConverter.ToSingle(data, posPos);
                     #endregion
 
-                    Console.WriteLine(" Lap Time: " + LapTime + " \n Total Time: " + TotalTime + " \n Lap: " + (Math.Round(pos + 1)) + " \n Speed: " + (Math.Round(speed * 3.6, 0)) + " KPH \n RMP: " + Math.Round(RPM * 10, 0) + "\n Gear: " + currentgear + " \n Braking: " + braking+ "\n");
+                    Console.WriteLine(" Lap Time: " + LapTime + " \n Total Time: " + TotalTime + " \n Lap: " + (Math.Round(pos + 1)) + " \n Speed: " + (Math.Round(speed * 3.6, 0)) + " KPH \n RMP: " + Math.Round(RPM * 10, 0) + "\n Gear: " + currentgear + " \n Braking: " + braking + "\n");
                 }
                 catch (Exception err)
                 {
