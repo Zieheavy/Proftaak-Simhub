@@ -8,6 +8,8 @@ using System.Threading.Tasks;
 using System.Net;
 using System.Net.Sockets;
 using System.Threading;
+using System.Diagnostics;
+using System.IO.Ports;
 
 namespace ConsoleSimHub
 {
@@ -20,10 +22,13 @@ namespace ConsoleSimHub
             int port = 20777;
             string ComPort = "";
 
+
+
             #region boot up sequence
             Console.WriteLine("Do you want to enter startup");
             if (Console.ReadLine().ToLower() == "yes")
             {
+
                 Console.WriteLine("Program starting up");
                 Console.WriteLine("please enter what comport your arduino is on");
                 ComPort = "COM" + Console.ReadLine();
@@ -197,6 +202,5 @@ namespace ConsoleSimHub
                 }
             }
         }
-
     }
 }

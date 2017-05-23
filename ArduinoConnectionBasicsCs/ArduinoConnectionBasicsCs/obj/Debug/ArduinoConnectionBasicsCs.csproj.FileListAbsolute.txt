@@ -1,0 +1,16 @@
+D:\VS2008\Visual Studio Cohort 2014\Arduino\ArduinoConnectionBasicsCs\ArduinoConnectionBasicsCs\bin\Debug\ArduinoConnectionBasicsCs.exe
+D:\VS2008\Visual Studio Cohort 2014\Arduino\ArduinoConnectionBasicsCs\ArduinoConnectionBasicsCs\bin\Debug\ArduinoConnectionBasicsCs.pdb
+D:\VS2008\Visual Studio Cohort 2014\Arduino\ArduinoConnectionBasicsCs\ArduinoConnectionBasicsCs\obj\Debug\ResolveAssemblyReference.cache
+D:\VS2008\Visual Studio Cohort 2014\Arduino\ArduinoConnectionBasicsCs\ArduinoConnectionBasicsCs\obj\Debug\ArduinoConnectionBasicsCs.Form1.resources
+D:\VS2008\Visual Studio Cohort 2014\Arduino\ArduinoConnectionBasicsCs\ArduinoConnectionBasicsCs\obj\Debug\ArduinoConnectionBasicsCs.Properties.Resources.resources
+D:\VS2008\Visual Studio Cohort 2014\Arduino\ArduinoConnectionBasicsCs\ArduinoConnectionBasicsCs\obj\Debug\ArduinoConnectionBasicsCs.csproj.GenerateResource.Cache
+D:\VS2008\Visual Studio Cohort 2014\Arduino\ArduinoConnectionBasicsCs\ArduinoConnectionBasicsCs\obj\Debug\ArduinoConnectionBasicsCs.exe
+D:\VS2008\Visual Studio Cohort 2014\Arduino\ArduinoConnectionBasicsCs\ArduinoConnectionBasicsCs\obj\Debug\ArduinoConnectionBasicsCs.pdb
+D:\proftaak\ArduinoConnectionBasicsCs\ArduinoConnectionBasicsCs\obj\Debug\ArduinoConnectionBasicsCs.exe
+D:\proftaak\ArduinoConnectionBasicsCs\ArduinoConnectionBasicsCs\obj\Debug\ArduinoConnectionBasicsCs.pdb
+D:\proftaak\ArduinoConnectionBasicsCs\ArduinoConnectionBasicsCs\bin\Debug\ArduinoConnectionBasicsCs.exe
+D:\proftaak\ArduinoConnectionBasicsCs\ArduinoConnectionBasicsCs\bin\Debug\ArduinoConnectionBasicsCs.pdb
+D:\proftaak\ArduinoConnectionBasicsCs\ArduinoConnectionBasicsCs\obj\Debug\ArduinoConnectionBasicsCs.csprojResolveAssemblyReference.cache
+D:\proftaak\ArduinoConnectionBasicsCs\ArduinoConnectionBasicsCs\obj\Debug\ArduinoConnectionBasicsCs.Form1.resources
+D:\proftaak\ArduinoConnectionBasicsCs\ArduinoConnectionBasicsCs\obj\Debug\ArduinoConnectionBasicsCs.Properties.Resources.resources
+D:\proftaak\ArduinoConnectionBasicsCs\ArduinoConnectionBasicsCs\obj\Debug\ArduinoConnectionBasicsCs.csproj.GenerateResource.Cache
