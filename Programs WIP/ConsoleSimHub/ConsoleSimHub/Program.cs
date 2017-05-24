@@ -192,6 +192,7 @@ namespace ConsoleSimHub
             }
             string BreakingChar = "";
             string GearChar = "";
+            int count = 0;
             UdpClient client = new UdpClient(20777);
             while (true)
             {
@@ -204,6 +205,7 @@ namespace ConsoleSimHub
                     #region Round
                     int posRound = 144;
                     float Round = BitConverter.ToSingle(data, posRound) + 1;
+                    string roundstring = Convert.ToString(Round);
                     #endregion
 
                     #region Gear
@@ -303,6 +305,7 @@ namespace ConsoleSimHub
                     #region Pos
                     int posPos = 144;
                     float pos = BitConverter.ToSingle(data, posPos);
+                    string posstring = Convert.ToString(pos+1);
                     #endregion
 
                     //Console.WriteLine(" Lap Time: " + LapTime + " \n Lap: " + Round + " \n Total Time: " + TotalTime + " \n Lap: " + (Math.Round(pos + 1)) + " \n Speed: " + (Math.Round(speed * 3.6, 0)) + " KPH \n RMP: " + Math.Round(RPM * 10, 0) + "\n Gear: " + currentgear + " \n Braking: " + braking + "\n");
@@ -310,14 +313,15 @@ namespace ConsoleSimHub
                     {
                         var SpeedArray = SpeedString.ToCharArray();
                         var RPMArray = RPMString.ToCharArray();
+                        var TimeArray = TotalTime.ToCharArray();
+                        var RoundTimeArray = LapTime.ToCharArray();
 
-                        char[] DataToSend = new char[8];
+                        char[] DataToSend = new char[19];
 
                         #region brakes
                         if (BreakingChar != "")
                         {
                             DataToSend[0] = Convert.ToChar(BreakingChar);
-                            Console.WriteLine(BreakingChar);
                         }
                         #endregion
 
@@ -337,15 +341,63 @@ namespace ConsoleSimHub
                         #endregion
 
                         #region RPM
-                        DataToSend[5] = RPMArray[0];
-                        DataToSend[6] = RPMArray[1];
-                        DataToSend[7] = RPMArray[2];
-                        DataToSend[8] = RPMArray[3];
+                        if (Convert.ToInt16(RPMString) > 1000)
+                        {
+                            DataToSend[4] = RPMArray[0];
+                            DataToSend[5] = RPMArray[1];
+                            DataToSend[6] = RPMArray[2];
+                            DataToSend[7] = RPMArray[3];
+                        }
+                        else
+                        {
+                            DataToSend[4] = Convert.ToChar(0);
+                            DataToSend[5] = Convert.ToChar(0);
+                            DataToSend[6] = Convert.ToChar(0);
+                            DataToSend[7] = Convert.ToChar(0);
+                        }
                         #endregion
 
                         #region gear
-
+                        if (GearChar != "")
+                        {
+                            DataToSend[8] = Convert.ToChar(GearChar);
+                        }
                         #endregion
+
+                        #region total time
+                        if (TimeArray.Count() > 1)
+                        {
+                            DataToSend[9] = TimeArray[0];
+                            DataToSend[10] = TimeArray[1];
+                            DataToSend[11] = TimeArray[3];
+                            DataToSend[12] = TimeArray[4];
+                        }
+                        #endregion 
+
+                        #region Round 
+                        if (RoundTimeArray.Count() > 1)
+                        {
+                            DataToSend[13] = RoundTimeArray[0];
+                            DataToSend[14] = RoundTimeArray[1];
+                            DataToSend[15] = RoundTimeArray[3];
+                            DataToSend[16] = RoundTimeArray[4];
+                        }
+                        #endregion 
+
+                        #region pos
+                        DataToSend[17] = Convert.ToChar(posstring);
+                        #endregion
+
+                        #region Round
+                        DataToSend[18] = Convert.ToChar(roundstring);
+                        #endregion
+
+                        Console.WriteLine(count++ + "\n");
+                        for (int i = 0; i < DataToSend.Count(); i++)
+                        {
+                            Console.WriteLine(DataToSend[i]);
+                        }
+                        Console.WriteLine("\n\n\n");
 
                         serialPortArduinoConnection.Write(DataToSend, 0, 8);
                     }
