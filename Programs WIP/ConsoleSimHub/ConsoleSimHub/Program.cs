@@ -15,14 +15,13 @@ namespace ConsoleSimHub
 {
     class zProgram
     {
+        static string ComPort = "";
+
         private static void Main()
         {
 
             string IP = "127.0.0.1";
             int port = 20777;
-            string ComPort = "";
-
-
 
             #region boot up sequence
             Console.WriteLine("Do you want to enter startup");
@@ -96,11 +95,13 @@ namespace ConsoleSimHub
 
         private static void ReceiveData()
         {
+            string FirstChar = "";
             UdpClient client = new UdpClient(20777);
             while (true)
             {
                 try
                 {
+
                     IPEndPoint anyIP = new IPEndPoint(IPAddress.Any, 20777);
                     byte[] data = client.Receive(ref anyIP);
 
@@ -168,6 +169,7 @@ namespace ConsoleSimHub
                     if (brakes != 0)
                     {
                         braking = true;
+                        FirstChar = "A";
                     }
                     else
                     {
@@ -195,6 +197,20 @@ namespace ConsoleSimHub
                     #endregion
 
                     Console.WriteLine(" Lap Time: " + LapTime + " \n Lap: " + Round + " \n Total Time: " + TotalTime + " \n Lap: " + (Math.Round(pos + 1)) + " \n Speed: " + (Math.Round(speed * 3.6, 0)) + " KPH \n RMP: " + Math.Round(RPM * 10, 0) + "\n Gear: " + currentgear + " \n Braking: " + braking + "\n");
+
+                    
+                    SerialPort serialPortArduinoConnection = new SerialPort();
+                    serialPortArduinoConnection.PortName = ComPort;
+                    serialPortArduinoConnection.Open();
+                    if (FirstChar != "")
+                    {
+                    char[] m_data = new char[1];
+                    
+                        m_data[0] = Convert.ToChar(FirstChar);
+
+                        serialPortArduinoConnection.Write(m_data, 0, 1);
+                    }
+                
                 }
                 catch (Exception err)
                 {

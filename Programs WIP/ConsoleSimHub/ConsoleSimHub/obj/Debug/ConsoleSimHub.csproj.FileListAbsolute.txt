@@ -21,6 +21,3 @@ D:\proftaak\Programs WIP\ConsoleSimHub\ConsoleSimHub\obj\Debug\ConsoleSimHub.pdb
 D:\proftaak\Programs WIP\ConsoleSimHub\ConsoleSimHub\bin\Debug\ConsoleSimHub.exe
 D:\proftaak\Programs WIP\ConsoleSimHub\ConsoleSimHub\bin\Debug\ConsoleSimHub.pdb
 D:\proftaak\Programs WIP\ConsoleSimHub\ConsoleSimHub\obj\Debug\ConsoleSimHub.csprojResolveAssemblyReference.cache
-D:\proftaak\Programs WIP\ConsoleSimHub\ConsoleSimHub\obj\Debug\ConsoleSimHub.Form1.resources
-D:\proftaak\Programs WIP\ConsoleSimHub\ConsoleSimHub\obj\Debug\ConsoleSimHub.Form2.resources
-D:\proftaak\Programs WIP\ConsoleSimHub\ConsoleSimHub\obj\Debug\ConsoleSimHub.csproj.GenerateResource.Cache
