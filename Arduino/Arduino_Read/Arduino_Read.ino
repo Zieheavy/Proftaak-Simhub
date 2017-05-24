@@ -1,5 +1,3 @@
-int speed;
-
 void setup() {
   Serial.begin(9600);
 
@@ -24,11 +22,9 @@ void SetOutputPinFromCsharp()
     }
     if(m_data[1] != "" && m_data[2] != "" && m_data[3] != "")
     {
-      int m_speed1 = ((m_data[1]-48)*-1);
-      int m_speed2 = ((m_data[2]-48)*-1);
-      int m_speed3 = ((m_data[3]-48)*-1);
-      speed = m_data1*100+m_speed2*10+m_speed3;
-      Serial
+//      int m_speed1 = ((m_data[1]-48)*-1);
+//      int m_speed2 = ((m_data[2]-48)*-1);
+//      int m_speed3 = ((m_data[3]-48)*-1);
     }
   }
 }
