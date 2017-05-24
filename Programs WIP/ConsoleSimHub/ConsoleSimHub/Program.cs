@@ -35,9 +35,27 @@ namespace ConsoleSimHub
                 Console.WriteLine("Do you want to launch dirt 3");
                 if (Console.ReadLine().ToLower() == "yes")
                 {
-                    System.Diagnostics.Process.Start(@"D:\STEAM\steamapps\common\DiRT 3 Complete Edition\dirt3_game.exe");
-                    Console.WriteLine("launching Dirt3");
-
+                    Console.WriteLine("Maarten?");
+                    if (Console.ReadLine().ToLower() == "yes")
+                    {
+                        //System.Diagnostics.Process.Start(@"D:\STEAM\steamapps\common\DiRT 3 Complete Edition\dirt3_game.exe");
+                        System.Diagnostics.Process.Start(@"C:\Program Files (x86)\Steam\steamapps\common\DiRT 3 Complete Edition\dirt3_game.exe");
+                        Console.WriteLine("launching Dirt3");
+                    }
+                    else
+                    {
+                        Console.WriteLine("Ryan?");
+                        if (Console.ReadLine().ToLower() == "ryan")
+                        {
+                            System.Diagnostics.Process.Start(@"D:\STEAM\steamapps\common\DiRT 3 Complete Edition\dirt3_game.exe");
+                            Console.WriteLine("launching Dirt3");
+                        }
+                        else
+                        {
+                            System.Diagnostics.Process.Start(@"D:\STEAM\steamapps\common\DiRT 3 Complete Edition\dirt3_game.exe");
+                            Console.WriteLine("launching Dirt3");
+                        }
+                    }
                 }
                 else
                 {
@@ -46,8 +64,26 @@ namespace ConsoleSimHub
                 Console.WriteLine("Do you want to launch DiRTTelemetryErrorFix");
                 if (Console.ReadLine().ToLower() == "yes")
                 {
-                    System.Diagnostics.Process.Start(@"D:\proftaak\DiRTTelemetryErrorFix_Release\DiRTTelemetryErrorFix.exe");
-                    Console.WriteLine("launching DiRTTelemetryErrorFix");
+                    Console.WriteLine("Maarten?");
+                    if (Console.ReadLine().ToLower() == "yes")
+                    {
+                        System.Diagnostics.Process.Start(@"C:\Users\Maarten Jakobs\Documents\School\Proftaak\Proftaak-Simhub\DiRTTelemetryErrorFix_Release\DiRTTelemetryErrorFix.exe");
+                        Console.WriteLine("launching DiRTTelemetryErrorFix");
+                    }
+                    else
+                    {
+                        Console.WriteLine("Ryan?");
+                        if (Console.ReadLine().ToLower() == "yes")
+                        {
+                            System.Diagnostics.Process.Start(@"D:\proftaak\DiRTTelemetryErrorFix_Release\DiRTTelemetryErrorFix.exe");
+                            Console.WriteLine("launching DiRTTelemetryErrorFix");
+                        }
+                        else
+                        {
+                            System.Diagnostics.Process.Start(@"D:\STEAM\steamapps\common\DiRT 3 Complete Edition\dirt3_game.exe");
+                            Console.WriteLine("launching Dirt3");
+                        }
+                    }
                 }
                 else
                 {
@@ -59,6 +95,8 @@ namespace ConsoleSimHub
                 Console.WriteLine("Exiting start up");
             }
             #endregion
+
+
 
 
             IPEndPoint remoteEndPoint = new IPEndPoint(IPAddress.Parse(IP), port);
@@ -95,7 +133,10 @@ namespace ConsoleSimHub
 
         private static void ReceiveData()
         {
-            string FirstChar = "";
+            SerialPort serialPortArduinoConnection = new SerialPort();
+            serialPortArduinoConnection.PortName = ComPort;
+            serialPortArduinoConnection.Open();
+            string BreakingChar = "";
             UdpClient client = new UdpClient(20777);
             while (true)
             {
@@ -107,7 +148,7 @@ namespace ConsoleSimHub
 
                     #region Round
                     int posRound = 144;
-                    float Round = BitConverter.ToSingle(data, posRound)+1;
+                    float Round = BitConverter.ToSingle(data, posRound) + 1;
                     #endregion
 
                     #region Gear
@@ -155,6 +196,7 @@ namespace ConsoleSimHub
                     #region Speed
                     int posSpeed = 28;
                     float speed = BitConverter.ToSingle(data, posSpeed);
+                    string myString = Convert.ToString(Math.Round(speed * 3.6, 0));
                     #endregion
 
                     #region RPM
@@ -169,11 +211,12 @@ namespace ConsoleSimHub
                     if (brakes != 0)
                     {
                         braking = true;
-                        FirstChar = "A";
+                        BreakingChar = "A";
                     }
                     else
                     {
                         braking = false;
+                        BreakingChar = "B";
                     }
                     #endregion
 
@@ -196,21 +239,40 @@ namespace ConsoleSimHub
                     float pos = BitConverter.ToSingle(data, posPos);
                     #endregion
 
-                    Console.WriteLine(" Lap Time: " + LapTime + " \n Lap: " + Round + " \n Total Time: " + TotalTime + " \n Lap: " + (Math.Round(pos + 1)) + " \n Speed: " + (Math.Round(speed * 3.6, 0)) + " KPH \n RMP: " + Math.Round(RPM * 10, 0) + "\n Gear: " + currentgear + " \n Braking: " + braking + "\n");
+                    //Console.WriteLine(" Lap Time: " + LapTime + " \n Lap: " + Round + " \n Total Time: " + TotalTime + " \n Lap: " + (Math.Round(pos + 1)) + " \n Speed: " + (Math.Round(speed * 3.6, 0)) + " KPH \n RMP: " + Math.Round(RPM * 10, 0) + "\n Gear: " + currentgear + " \n Braking: " + braking + "\n");
 
-                    
-                    SerialPort serialPortArduinoConnection = new SerialPort();
-                    serialPortArduinoConnection.PortName = ComPort;
-                    serialPortArduinoConnection.Open();
-                    if (FirstChar != "")
+                    var SpeedArray = myString.ToCharArray();
+
+
+                    char[] DataToSend = new char[4];
+                    if (BreakingChar != "")
                     {
-                    char[] m_data = new char[1];
-                    
-                        m_data[0] = Convert.ToChar(FirstChar);
-
-                        serialPortArduinoConnection.Write(m_data, 0, 1);
+                        DataToSend[0] = Convert.ToChar(BreakingChar);
+                        Console.WriteLine(BreakingChar);
                     }
-                
+                    if (SpeedArray.Count() > 2)
+                    {
+                        DataToSend[1] = SpeedArray[0];
+                        DataToSend[2] = SpeedArray[1];
+                        DataToSend[3] = SpeedArray[2];
+                    }
+                    else if (SpeedArray.Count() > 1)
+                    {
+                        DataToSend[1] = Convert.ToChar("0");
+                        DataToSend[2] = SpeedArray[0];
+                        DataToSend[3] = SpeedArray[1];
+                    }
+                 /*   else
+                    {
+                        DataToSend[1] = Convert.ToChar("0");
+                        DataToSend[2] = Convert.ToChar("0");
+                        DataToSend[3] = Convert.ToChar("0");
+                    }*/
+
+                    serialPortArduinoConnection.Write(DataToSend, 0, 4);
+
+
+
                 }
                 catch (Exception err)
                 {
