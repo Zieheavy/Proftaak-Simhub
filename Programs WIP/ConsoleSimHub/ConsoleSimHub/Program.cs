@@ -213,44 +213,44 @@ namespace ConsoleSimHub
                     if (gearing == 0)
                     {
                         currentgear = "N";
-                        GearChar = "!";
+                        GearChar = "B";
                     }
                     else if (gearing == 64)
                     {
                         currentgear = "2";
-                        GearChar = "\"";
+                        GearChar = "D";
                     }
                     else if (gearing == 97)
                     {
                         currentgear = "R";
-                        GearChar = "#";
+                        GearChar = "A";
                     }
                     else if (gearing == 128)
                     {
                         currentgear = "3";
 
-                        GearChar = "$";
+                        GearChar = "E";
                     }
                     else if (gearing == 191)
                     {
                         currentgear = "1";
-                        GearChar = "%";
+                        GearChar = "C";
                     }
                     else if (gearing == 192)
                     {
                         currentgear = "4";
-                        GearChar = "&";
+                        GearChar = "F";
                     }
                     else if (gearing == 224)
                     {
                         currentgear = "5";
 
-                        GearChar = "\'";
+                        GearChar = "G";
                     }
                     else if (gearing == 256)
                     {
                         currentgear = "6";
-                        GearChar = "(";
+                        GearChar = "H";
                     }
                     else
                     {
