@@ -4,10 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-//newely added
+//used to make connetion with local server
 using System.Net;
 using System.Net.Sockets;
 using System.Threading;
+
+//used by arduino
 using System.Diagnostics;
 using System.IO.Ports;
 
@@ -15,8 +17,10 @@ namespace ConsoleSimHub
 {
     class zProgram
     {
-        static string ComPort = "";
-        static bool StartUpTrue = true;
+        //global variables
+        static string comPort = "";
+        static bool startUpTrue = true;
+        static bool comPortOpen = false;
 
         private static void Main()
         {
@@ -24,6 +28,13 @@ namespace ConsoleSimHub
             string IP = "127.0.0.1";
             int port = 20777;
 
+            // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+            // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+            // Try cleaning up this code
+            // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+            // \/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/
             #region boot up sequence
             Console.WriteLine("Do you want to enter startup");
             if (Console.ReadLine().ToLower() == "yes")
@@ -31,8 +42,8 @@ namespace ConsoleSimHub
 
                 Console.WriteLine("Program starting up");
                 Console.WriteLine("please enter what comport your arduino is on");
-                ComPort = "COM" + Console.ReadLine();
-                Console.WriteLine("Your arduino is on: " + ComPort);
+                comPort = "COM" + Console.ReadLine();
+                Console.WriteLine("Your arduino is on: " + comPort);
                 Console.WriteLine("Do you want to launch dirt 3");
                 if (Console.ReadLine().ToLower() == "yes")
                 {
@@ -135,14 +146,19 @@ namespace ConsoleSimHub
             }
             else
             {
-                StartUpTrue = false;
+                startUpTrue = false;
                 Console.WriteLine("Exiting start up");
             }
             #endregion
+            // /\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
 
+            // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+            // Try cleaning up this code
+            // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
+            // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
-
+            #region receive
             IPEndPoint remoteEndPoint = new IPEndPoint(IPAddress.Parse(IP), port);
 
             Thread receiveThread = new Thread(ReceiveData);
@@ -173,233 +189,234 @@ namespace ConsoleSimHub
             {
                 client.Close();
             }
+            #endregion
         }
 
         private static void ReceiveData()
         {
+            //initiallize connection with arduino
             SerialPort serialPortArduinoConnection = new SerialPort();
-            if (StartUpTrue == true)
+            if (startUpTrue == true)
             {
                 try
                 {
-                    serialPortArduinoConnection.PortName = ComPort;
+                    //checks if the comport is open
+                    serialPortArduinoConnection.PortName = comPort;
                     serialPortArduinoConnection.Open();
+                    comPortOpen = true;
                 }
                 catch
                 {
                     Console.WriteLine("Comport is not avalible");
                 }
             }
-            string BreakingChar = "";
-            string GearChar = "";
-            int count = 0;
+            string breakingChar = "";
+            string gearChar = "";
             UdpClient client = new UdpClient(20777);
             while (true)
             {
                 try
                 {
-
+                    //makes a connection with a local server to recive data from the game
                     IPEndPoint anyIP = new IPEndPoint(IPAddress.Any, 20777);
-                    byte[] data = client.Receive(ref anyIP);
+                    byte[] dataGame = client.Receive(ref anyIP);
 
                     #region Round
-                    int posRound = 144;
-                    float Round = BitConverter.ToSingle(data, posRound) + 1;
-                    string roundstring = Convert.ToString(Round);
+                    float round = BitConverter.ToSingle(dataGame, 144) + 1;
+                    string roundString = Convert.ToString(round);
                     #endregion
 
                     #region Gear
-                    int posgear = 132;
-                    string currentgear = "N";
-                    float gearing = (data[posgear] & 0xff) + (data[posgear + 1] & 0xff) + (data[posgear + 2] & 0xff) + (data[posgear + 3] & 0xff);
+                    string currentGear = "N";
+                    float gearing = BitConverter.ToSingle(dataGame, 132);
                     if (gearing == 0)
                     {
-                        currentgear = "N";
-                        GearChar = "B";
+                        currentGear = "N";
+                        gearChar = "B";
                     }
                     else if (gearing == 64)
                     {
-                        currentgear = "2";
-                        GearChar = "D";
+                        currentGear = "2";
+                        gearChar = "D";
                     }
                     else if (gearing == 97)
                     {
-                        currentgear = "R";
-                        GearChar = "A";
+                        currentGear = "R";
+                        gearChar = "A";
                     }
                     else if (gearing == 128)
                     {
-                        currentgear = "3";
+                        currentGear = "3";
 
-                        GearChar = "E";
+                        gearChar = "E";
                     }
                     else if (gearing == 191)
                     {
-                        currentgear = "1";
-                        GearChar = "C";
+                        currentGear = "1";
+                        gearChar = "C";
                     }
                     else if (gearing == 192)
                     {
-                        currentgear = "4";
-                        GearChar = "F";
+                        currentGear = "4";
+                        gearChar = "F";
                     }
                     else if (gearing == 224)
                     {
-                        currentgear = "5";
+                        currentGear = "5";
 
-                        GearChar = "G";
+                        gearChar = "G";
                     }
                     else if (gearing == 256)
                     {
-                        currentgear = "6";
-                        GearChar = "H";
+                        currentGear = "6";
+                        gearChar = "H";
                     }
                     else
                     {
-                        currentgear = Convert.ToString(gearing);
+                        currentGear = Convert.ToString(gearing);
                     }
                     #endregion
 
                     #region Speed
-                    int posSpeed = 28;
-                    float speed = BitConverter.ToSingle(data, posSpeed);
-                    string SpeedString = Convert.ToString(Math.Round(speed * 3.6, 0));
+                    float speed = BitConverter.ToSingle(dataGame, 28);
+                    string speedString = Convert.ToString(Math.Round(speed * 3.6, 0));
                     #endregion
 
                     #region RPM
-                    int posRPM = 148;
-                    float RPM = BitConverter.ToSingle(data, posRPM);
+                    float RPM = BitConverter.ToSingle(dataGame, 148);
                     string RPMString = Convert.ToString(Math.Round(RPM * 10));
                     #endregion
 
                     #region Brake
-                    int posBrake = 124;
                     bool braking = false;
-                    float brakes = BitConverter.ToSingle(data, posBrake);
+                    float brakes = BitConverter.ToSingle(dataGame, 124);
                     if (brakes != 0)
                     {
                         braking = true;
-                        BreakingChar = "A";
+                        breakingChar = "A";
                     }
                     else
                     {
                         braking = false;
-                        BreakingChar = "B";
+                        breakingChar = "B";
                     }
                     #endregion
 
                     #region Total Time
-                    int posTTime = 0;
-                    float TTime = BitConverter.ToSingle(data, posTTime);
-                    TimeSpan result = TimeSpan.FromSeconds(TTime - 13);
-                    string TotalTime = result.ToString("mm':'ss");
+                    float totalTime = BitConverter.ToSingle(dataGame, 0);
+                    TimeSpan resultTotalTime = TimeSpan.FromSeconds(totalTime - 13);
+                    string totalTimeString = resultTotalTime.ToString("mm':'ss");
                     #endregion
 
                     #region Lap Time
-                    int posLTime = 4;
-                    float LTime = BitConverter.ToSingle(data, posLTime);
-                    TimeSpan resultL = TimeSpan.FromSeconds(TTime - 13);
-                    string LapTime = resultL.ToString("mm':'ss");
+                    float lapTime = BitConverter.ToSingle(dataGame, 4);
+                    TimeSpan resultLapTime = TimeSpan.FromSeconds(totalTime - 13);
+                    string lapTimeString = resultLapTime.ToString("mm':'ss");
                     #endregion
 
-                    #region Pos
-                    int posPos = 144;
-                    float pos = BitConverter.ToSingle(data, posPos);
-                    string posstring = Convert.ToString(pos+1);
+                    #region Position
+                    float Position = BitConverter.ToSingle(dataGame, 144);
+                    string PositionString = Convert.ToString(Position + 1);
                     #endregion
 
-                    //Console.WriteLine(" Lap Time: " + LapTime + " \n Lap: " + Round + " \n Total Time: " + TotalTime + " \n Lap: " + (Math.Round(pos + 1)) + " \n Speed: " + (Math.Round(speed * 3.6, 0)) + " KPH \n RMP: " + Math.Round(RPM * 10, 0) + "\n Gear: " + currentgear + " \n Braking: " + braking + "\n");
-                    if (StartUpTrue == true)
+                    //writes the converted data you get from the game in the console
+                    Console.WriteLine(" Lap Time: " + lapTimeString + " \n Lap: " + round + " \n Total Time: " + totalTimeString + " \n Pos: " + (Math.Round(Position + 1)) + " \n Speed: " + (Math.Round(speed * 3.6, 0)) + " KPH \n RMP: " + Math.Round(RPM * 10, 0) + "\n Gear: " + currentGear + " \n Braking: " + braking + "\n");
+                    
+                    //if you have decided to enter startup and the comport is open it will start sending data to arduino
+                    if (startUpTrue == true)
                     {
-                        var SpeedArray = SpeedString.ToCharArray();
+                        var speedArray = speedString.ToCharArray();
                         var RPMArray = RPMString.ToCharArray();
-                        var TimeArray = TotalTime.ToCharArray();
-                        var RoundTimeArray = LapTime.ToCharArray();
+                        var timeArray = totalTimeString.ToCharArray();
+                        var roundTimeArray = lapTimeString.ToCharArray();
 
-                        char[] DataToSend = new char[19];
+                        char[] dataToSend = new char[19];
 
-                        #region brakes
-                        if (BreakingChar != "")
+                        if (comPortOpen == true)
                         {
-                            DataToSend[0] = Convert.ToChar(BreakingChar);
-                        }
-                        #endregion
+                            #region Brakes
+                            if (breakingChar != "")
+                            {
+                                dataToSend[0] = Convert.ToChar(breakingChar);
+                            }
+                            #endregion
 
-                        #region speed
-                        if (SpeedArray.Count() > 2)
-                        {
-                            DataToSend[1] = SpeedArray[0];
-                            DataToSend[2] = SpeedArray[1];
-                            DataToSend[3] = SpeedArray[2];
-                        }
-                        else if (SpeedArray.Count() > 1)
-                        {
-                            DataToSend[1] = Convert.ToChar("0");
-                            DataToSend[2] = SpeedArray[0];
-                            DataToSend[3] = SpeedArray[1];
-                        }
-                        #endregion
+                            #region Speed
+                            if (speedArray.Count() > 2)
+                            {
+                                dataToSend[1] = speedArray[0];
+                                dataToSend[2] = speedArray[1];
+                                dataToSend[3] = speedArray[2];
+                            }
+                            else if (speedArray.Count() > 1)
+                            {
+                                dataToSend[1] = Convert.ToChar("0");
+                                dataToSend[2] = speedArray[0];
+                                dataToSend[3] = speedArray[1];
+                            }
+                            #endregion
 
-                        #region RPM
-                        if (Convert.ToInt16(RPMString) > 1000)
-                        {
-                            DataToSend[4] = RPMArray[0];
-                            DataToSend[5] = RPMArray[1];
-                            DataToSend[6] = RPMArray[2];
-                            DataToSend[7] = RPMArray[3];
+                            #region RPM
+                            if (Convert.ToInt16(RPMString) > 1000)
+                            {
+                                dataToSend[4] = RPMArray[0];
+                                dataToSend[5] = RPMArray[1];
+                                dataToSend[6] = RPMArray[2];
+                                dataToSend[7] = RPMArray[3];
+                            }
+                            else
+                            {
+                                dataToSend[4] = Convert.ToChar(0);
+                                dataToSend[5] = Convert.ToChar(0);
+                                dataToSend[6] = Convert.ToChar(0);
+                                dataToSend[7] = Convert.ToChar(0);
+                            }
+                            #endregion
+
+                            #region Gear
+                            if (gearChar != "")
+                            {
+                                dataToSend[8] = Convert.ToChar(gearChar);
+                            }
+                            #endregion
+
+                            #region Total Time
+                            if (timeArray.Count() > 1)
+                            {
+                                dataToSend[9] = timeArray[0];
+                                dataToSend[10] = timeArray[1];
+                                dataToSend[11] = timeArray[3];
+                                dataToSend[12] = timeArray[4];
+                            }
+                            #endregion
+
+                            #region Round Time
+                            if (roundTimeArray.Count() > 1)
+                            {
+                                dataToSend[13] = roundTimeArray[0];
+                                dataToSend[14] = roundTimeArray[1];
+                                dataToSend[15] = roundTimeArray[3];
+                                dataToSend[16] = roundTimeArray[4];
+                            }
+                            #endregion
+
+                            #region Position
+                            dataToSend[17] = Convert.ToChar(PositionString);
+                            #endregion
+
+                            #region Round
+                            dataToSend[18] = Convert.ToChar(roundString);
+                            #endregion
+
+                            //Console.WriteLine(count++ + "\n");
+                            //for (int i = 0; i < DataToSend.Count(); i++)
+                            //{
+                            //    Console.WriteLine(DataToSend[i]);
+                            //}
+                            //Console.WriteLine("\n\n\n");
+
+                            serialPortArduinoConnection.Write(dataToSend, 0, 8);
                         }
-                        else
-                        {
-                            DataToSend[4] = Convert.ToChar(0);
-                            DataToSend[5] = Convert.ToChar(0);
-                            DataToSend[6] = Convert.ToChar(0);
-                            DataToSend[7] = Convert.ToChar(0);
-                        }
-                        #endregion
-
-                        #region gear
-                        if (GearChar != "")
-                        {
-                            DataToSend[8] = Convert.ToChar(GearChar);
-                        }
-                        #endregion
-
-                        #region total time
-                        if (TimeArray.Count() > 1)
-                        {
-                            DataToSend[9] = TimeArray[0];
-                            DataToSend[10] = TimeArray[1];
-                            DataToSend[11] = TimeArray[3];
-                            DataToSend[12] = TimeArray[4];
-                        }
-                        #endregion 
-
-                        #region Round 
-                        if (RoundTimeArray.Count() > 1)
-                        {
-                            DataToSend[13] = RoundTimeArray[0];
-                            DataToSend[14] = RoundTimeArray[1];
-                            DataToSend[15] = RoundTimeArray[3];
-                            DataToSend[16] = RoundTimeArray[4];
-                        }
-                        #endregion 
-
-                        #region pos
-                        DataToSend[17] = Convert.ToChar(posstring);
-                        #endregion
-
-                        #region Round
-                        DataToSend[18] = Convert.ToChar(roundstring);
-                        #endregion
-
-                        Console.WriteLine(count++ + "\n");
-                        for (int i = 0; i < DataToSend.Count(); i++)
-                        {
-                            Console.WriteLine(DataToSend[i]);
-                        }
-                        Console.WriteLine("\n\n\n");
-
-                        serialPortArduinoConnection.Write(DataToSend, 0, 8);
                     }
                 }
                 catch (Exception err)
