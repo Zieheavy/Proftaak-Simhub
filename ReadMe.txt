@@ -4,3 +4,4 @@ this is a arduino project that will display the telementry of the game Dirt 3.
 this project is a school project so sorry if there are any bugs dont blame us. 
 
 copyright by: AMX developer agency
+copyright by: Roc Teraa
