@@ -212,6 +212,7 @@ namespace ConsoleSimHub
             }
             string breakingChar = "";
             string gearChar = "";
+            Console.WriteLine(gearChar);
             UdpClient client = new UdpClient(20777);
             while (true)
             {
@@ -227,49 +228,49 @@ namespace ConsoleSimHub
                     #endregion
 
                     #region Gear
-                    string currentGear = "N";
+                    string currentGear;
                     float gearing = BitConverter.ToSingle(dataGame, 132);
                     if (gearing == 0)
                     {
                         currentGear = "N";
-                        gearChar = "B";
+                        gearChar = "N";
                     }
                     else if (gearing == 64)
                     {
                         currentGear = "2";
-                        gearChar = "D";
+                        gearChar = "2";
                     }
                     else if (gearing == 97)
                     {
                         currentGear = "R";
-                        gearChar = "A";
+                        gearChar = "R";
                     }
                     else if (gearing == 128)
                     {
                         currentGear = "3";
 
-                        gearChar = "E";
+                        gearChar = "3";
                     }
                     else if (gearing == 191)
                     {
                         currentGear = "1";
-                        gearChar = "C";
+                        gearChar = "1";
                     }
                     else if (gearing == 192)
                     {
                         currentGear = "4";
-                        gearChar = "F";
+                        gearChar = "4";
                     }
                     else if (gearing == 224)
                     {
                         currentGear = "5";
 
-                        gearChar = "G";
+                        gearChar = "5";
                     }
                     else if (gearing == 256)
                     {
                         currentGear = "6";
-                        gearChar = "H";
+                        gearChar = "6";
                     }
                     else
                     {
@@ -320,7 +321,7 @@ namespace ConsoleSimHub
                     #endregion
 
                     //writes the converted data you get from the game in the console
-                    Console.WriteLine(" Lap Time: " + lapTimeString + " \n Lap: " + round + " \n Total Time: " + totalTimeString + " \n Pos: " + (Math.Round(Position + 1)) + " \n Speed: " + (Math.Round(speed * 3.6, 0)) + " KPH \n RMP: " + Math.Round(RPM * 10, 0) + "\n Gear: " + currentGear + " \n Braking: " + braking + "\n");
+                    //Console.WriteLine(" Lap Time: " + lapTimeString + " \n Lap: " + round + " \n Total Time: " + totalTimeString + " \n Pos: " + (Math.Round(Position + 1)) + " \n Speed: " + (Math.Round(speed * 3.6, 0)) + " KPH \n RMP: " + Math.Round(RPM * 10, 0) + "\n Gear: " + currentGear + " \n Braking: " + braking + "\n");
                     
                     //if you have decided to enter startup and the comport is open it will start sending data to arduino
                     if (startUpTrue == true)
@@ -376,7 +377,7 @@ namespace ConsoleSimHub
                             #region Gear
                             if (gearChar != "")
                             {
-                                dataToSend[8] = Convert.ToChar(gearChar);
+                                dataToSend[8] = Convert.ToChar(currentGear);
                             }
                             #endregion
 
@@ -408,12 +409,10 @@ namespace ConsoleSimHub
                             dataToSend[18] = Convert.ToChar(roundString);
                             #endregion
 
-                            //Console.WriteLine(count++ + "\n");
-                            //for (int i = 0; i < DataToSend.Count(); i++)
-                            //{
-                            //    Console.WriteLine(DataToSend[i]);
-                            //}
-                            //Console.WriteLine("\n\n\n");
+
+                            Console.WriteLine(dataToSend[8]);
+
+                            Console.WriteLine("\n\n\n");
 
                             serialPortArduinoConnection.Write(dataToSend, 0, 8);
                         }

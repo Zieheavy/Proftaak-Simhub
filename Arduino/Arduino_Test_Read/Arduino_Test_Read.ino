@@ -364,7 +364,7 @@ void SetOutputPinFromCsharp()
     
     if(m_data[1] == 48)
     {
-      lights[1] = N0;
+      lights[1] = N1;
     }else if(m_data[1] == 49)
     {
       lights[1] = N1;    
