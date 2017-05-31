@@ -399,9 +399,7 @@ namespace ConsoleSimHub
                             dataToSend[18] = Convert.ToChar(roundString);
                             #endregion
 
-
-                            Console.WriteLine(currentGear);
-                            //Console.WriteLine(dataToSend[8]);
+                            Console.WriteLine(dataToSend[4] + dataToSend[5] + dataToSend[6] + dataToSend[7]);
 
                             serialPortArduinoConnection.Write(dataToSend, 0, 8);
                         }
