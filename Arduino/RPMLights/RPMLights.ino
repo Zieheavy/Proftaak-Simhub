@@ -15,7 +15,7 @@ void loop()
 {
 for (a=1; a<=RpmMax; a++)
 {
-RpmLeds = map(a, 500, RpmMax,1 ,8);
+RpmLeds = map(a, 1, RpmMax,1 ,8);
          if (RpmLeds == 1) { module.setLEDs(0b00000001 | 0b00000000<< 8);} 
          if (RpmLeds == 2) { module.setLEDs(0b00000011 | 0b00000000<< 8);}
          if (RpmLeds == 3) { module.setLEDs(0b00000111 | 0b00000000<< 8);}  

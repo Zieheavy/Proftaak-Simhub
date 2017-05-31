@@ -293,38 +293,38 @@ namespace ConsoleSimHub
                             #region Speed
                             if (speedArray.Count() > 2)
                             {
-                                dataToSend[3] = speedArray[0];
-                                dataToSend[4] = speedArray[1];
-                                dataToSend[5] = speedArray[2];
+                                dataToSend[7] = speedArray[0];
+                                dataToSend[8] = speedArray[1];
+                                dataToSend[9] = speedArray[2];
                             }
                             else if (speedArray.Count() > 1)
                             {
-                                dataToSend[3] = Convert.ToChar("0");
-                                dataToSend[4] = speedArray[0];
-                                dataToSend[5] = speedArray[1];
+                                dataToSend[7] = Convert.ToChar("0");
+                                dataToSend[8] = speedArray[0];
+                                dataToSend[9] = speedArray[1];
                             }
                             else
                             {
-                                dataToSend[3] = Convert.ToChar("0");
-                                dataToSend[4] = Convert.ToChar("0");
-                                dataToSend[5] = Convert.ToChar("0");
+                                dataToSend[7] = Convert.ToChar("0");
+                                dataToSend[8] = Convert.ToChar("0");
+                                dataToSend[9] = Convert.ToChar("0");
                             }
                             #endregion
 
                             #region RPM
                             if (Convert.ToInt16(RPMString) > 1000)
                             {
-                                dataToSend[6] = RPMArray[0];
-                                dataToSend[7] = RPMArray[1];
-                                dataToSend[8] = RPMArray[2];
-                                dataToSend[9] = RPMArray[3];
+                                dataToSend[3] = RPMArray[0];
+                                dataToSend[4] = RPMArray[1];
+                                dataToSend[5] = RPMArray[2];
+                                dataToSend[6] = RPMArray[3];
                             }
                             else
                             {
+                                dataToSend[3] = Convert.ToChar(0);
+                                dataToSend[4] = Convert.ToChar(0);
+                                dataToSend[5] = Convert.ToChar(0);
                                 dataToSend[6] = Convert.ToChar(0);
-                                dataToSend[7] = Convert.ToChar(0);
-                                dataToSend[8] = Convert.ToChar(0);
-                                dataToSend[9] = Convert.ToChar(0);
                             }
                             #endregion
 
@@ -358,7 +358,7 @@ namespace ConsoleSimHub
                             dataToSend[20] = Convert.ToChar(roundString);
                             #endregion
 
-                            Console.WriteLine(dataToSend[2]);
+                            Console.WriteLine(dataToSend[8]);
 
                             serialPortArduinoConnection.Write(dataToSend, 0, 8);
                         }
