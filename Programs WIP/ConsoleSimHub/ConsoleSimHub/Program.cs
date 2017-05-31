@@ -321,85 +321,91 @@ namespace ConsoleSimHub
                         var timeArray = totalTimeString.ToCharArray();
                         var roundTimeArray = lapTimeString.ToCharArray();
 
-                        char[] dataToSend = new char[19];
+                        char[] dataToSend = new char[21];
 
                         if (comPortOpen == true)
                         {
+                            #region garbage filter
+                            dataToSend[0] = Convert.ToChar("A");
+                            dataToSend[1] = Convert.ToChar("B");
+                            #endregion
+
                             #region Brakes
                             if (breakingChar != "")
                             {
-                                dataToSend[0] = Convert.ToChar(breakingChar);
+                                dataToSend[2] = Convert.ToChar(breakingChar);
                             }
                             #endregion
 
                             #region Speed
                             if (speedArray.Count() > 2)
                             {
-                                dataToSend[1] = speedArray[0];
-                                dataToSend[2] = speedArray[1];
-                                dataToSend[3] = speedArray[2];
+                                dataToSend[3] = speedArray[0];
+                                dataToSend[4] = speedArray[1];
+                                dataToSend[5] = speedArray[2];
                             }
                             else if (speedArray.Count() > 1)
                             {
-                                dataToSend[1] = Convert.ToChar("0");
-                                dataToSend[2] = speedArray[0];
-                                dataToSend[3] = speedArray[1];
+                                dataToSend[3] = Convert.ToChar("0");
+                                dataToSend[4] = speedArray[0];
+                                dataToSend[5] = speedArray[1];
                             }
                             #endregion
 
                             #region RPM
                             if (Convert.ToInt16(RPMString) > 1000)
                             {
-                                dataToSend[4] = RPMArray[0];
-                                dataToSend[5] = RPMArray[1];
-                                dataToSend[6] = RPMArray[2];
-                                dataToSend[7] = RPMArray[3];
+                                dataToSend[6] = RPMArray[0];
+                                dataToSend[7] = RPMArray[1];
+                                dataToSend[8] = RPMArray[2];
+                                dataToSend[9] = RPMArray[3];
                             }
                             else
                             {
-                                dataToSend[4] = Convert.ToChar(0);
-                                dataToSend[5] = Convert.ToChar(0);
                                 dataToSend[6] = Convert.ToChar(0);
                                 dataToSend[7] = Convert.ToChar(0);
+                                dataToSend[8] = Convert.ToChar(0);
+                                dataToSend[9] = Convert.ToChar(0);
                             }
                             #endregion
 
                             #region Gear
                             if (currentGear != "")
                             {
-                                dataToSend[8] = Convert.ToChar(currentGear);
+                                dataToSend[10] = Convert.ToChar(currentGear);
                             }
                             #endregion
 
                             #region Total Time
                             if (timeArray.Count() > 1)
                             {
-                                dataToSend[9] = timeArray[0];
-                                dataToSend[10] = timeArray[1];
-                                dataToSend[11] = timeArray[3];
-                                dataToSend[12] = timeArray[4];
+                                dataToSend[11] = timeArray[0];
+                                dataToSend[12] = timeArray[1];
+                                dataToSend[13] = timeArray[3];
+                                dataToSend[14] = timeArray[4];
                             }
                             #endregion
 
                             #region Round Time
                             if (roundTimeArray.Count() > 1)
                             {
-                                dataToSend[13] = roundTimeArray[0];
-                                dataToSend[14] = roundTimeArray[1];
-                                dataToSend[15] = roundTimeArray[3];
-                                dataToSend[16] = roundTimeArray[4];
+                                dataToSend[15] = roundTimeArray[0];
+                                dataToSend[16] = roundTimeArray[1];
+                                dataToSend[17] = roundTimeArray[3];
+                                dataToSend[18] = roundTimeArray[4];
                             }
                             #endregion
 
                             #region Position
-                            dataToSend[17] = Convert.ToChar(PositionString);
+                            dataToSend[19] = Convert.ToChar(PositionString);
                             #endregion
 
                             #region Round
-                            dataToSend[18] = Convert.ToChar(roundString);
+                            dataToSend[20] = Convert.ToChar(roundString);
                             #endregion
 
-                            Console.WriteLine(dataToSend[4] + dataToSend[5] + dataToSend[6] + dataToSend[7]);
+                            //Console.WriteLine(dataToSend[6] + dataToSend[7] + dataToSend[8] + dataToSend[9]);
+                            Console.WriteLine(RPMArray[0] + RPMArray[1] + RPMArray[2] + RPMArray[3]);
 
                             serialPortArduinoConnection.Write(dataToSend, 0, 8);
                         }
