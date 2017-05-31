@@ -233,44 +233,34 @@ namespace ConsoleSimHub
                     if (gearing == 0)
                     {
                         currentGear = "N";
-                        gearChar = "N";
                     }
                     else if (gearing == 64)
                     {
                         currentGear = "2";
-                        gearChar = "2";
                     }
-                    else if (gearing == 97)
+                    else if (gearing == 10)
                     {
                         currentGear = "R";
-                        gearChar = "R";
                     }
                     else if (gearing == 128)
                     {
                         currentGear = "3";
-
-                        gearChar = "3";
                     }
                     else if (gearing == 191)
                     {
                         currentGear = "1";
-                        gearChar = "1";
                     }
                     else if (gearing == 192)
                     {
                         currentGear = "4";
-                        gearChar = "4";
                     }
                     else if (gearing == 224)
                     {
                         currentGear = "5";
-
-                        gearChar = "5";
                     }
                     else if (gearing == 256)
                     {
                         currentGear = "6";
-                        gearChar = "6";
                     }
                     else
                     {
@@ -410,9 +400,8 @@ namespace ConsoleSimHub
                             #endregion
 
 
-                            Console.WriteLine(dataToSend[8]);
-
-                            Console.WriteLine("\n\n\n");
+                            Console.WriteLine(currentGear);
+                            //Console.WriteLine(dataToSend[8] + "\n");
 
                             serialPortArduinoConnection.Write(dataToSend, 0, 8);
                         }
