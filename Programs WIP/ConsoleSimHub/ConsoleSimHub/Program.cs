@@ -350,6 +350,12 @@ namespace ConsoleSimHub
                                 dataToSend[4] = speedArray[0];
                                 dataToSend[5] = speedArray[1];
                             }
+                            else
+                            {
+                                dataToSend[3] = Convert.ToChar("0");
+                                dataToSend[4] = Convert.ToChar("0");
+                                dataToSend[5] = Convert.ToChar("0");
+                            }
                             #endregion
 
                             #region RPM
@@ -404,8 +410,7 @@ namespace ConsoleSimHub
                             dataToSend[20] = Convert.ToChar(roundString);
                             #endregion
 
-                            //Console.WriteLine(dataToSend[6] + dataToSend[7] + dataToSend[8] + dataToSend[9]);
-                            Console.WriteLine(RPMArray[0] + RPMArray[1] + RPMArray[2] + RPMArray[3]);
+                            Console.WriteLine(dataToSend[19]);
 
                             serialPortArduinoConnection.Write(dataToSend, 0, 8);
                         }
