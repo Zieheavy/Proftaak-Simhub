@@ -365,7 +365,7 @@ namespace ConsoleSimHub
                             #endregion
 
                             #region Gear
-                            if (gearChar != "")
+                            if (currentGear != "")
                             {
                                 dataToSend[8] = Convert.ToChar(currentGear);
                             }
@@ -401,7 +401,7 @@ namespace ConsoleSimHub
 
 
                             Console.WriteLine(currentGear);
-                            //Console.WriteLine(dataToSend[8] + "\n");
+                            //Console.WriteLine(dataToSend[8]);
 
                             serialPortArduinoConnection.Write(dataToSend, 0, 8);
                         }
