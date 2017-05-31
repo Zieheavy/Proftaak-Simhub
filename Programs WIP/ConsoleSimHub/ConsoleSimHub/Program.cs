@@ -28,135 +28,38 @@ namespace ConsoleSimHub
             string IP = "127.0.0.1";
             int port = 20777;
 
-            // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
-            // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-            // Try cleaning up this code
-            // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
-            // \/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/
-            #region boot up sequence
-            Console.WriteLine("Do you want to enter startup");
-            if (Console.ReadLine().ToLower() == "yes")
+            #region startup
+            Console.WriteLine("UserName");
+            string userName = Console.ReadLine().ToLower();
+            Console.WriteLine("please select you comport");
+            comPort = "COM" + Console.ReadLine();
+            if (userName == "ryan" || userName == "r" || userName == "maarten" || userName == "m")
             {
-
-                Console.WriteLine("Program starting up");
-                Console.WriteLine("please enter what comport your arduino is on");
-                comPort = "COM" + Console.ReadLine();
-                Console.WriteLine("Your arduino is on: " + comPort);
-                Console.WriteLine("Do you want to launch dirt 3");
-                if (Console.ReadLine().ToLower() == "yes")
+                Console.WriteLine("Welcome " + userName + ". Do you want to launch dirt 3");
+                string answerLaunchDirt3 = Console.ReadLine().ToLower();
+                if (answerLaunchDirt3 == "yes" || answerLaunchDirt3 == "y")
                 {
-                    Console.WriteLine("Maarten?");
-                    if (Console.ReadLine().ToLower() == "yes")
-                    {
-                        //System.Diagnostics.Process.Start(@"D:\STEAM\steamapps\common\DiRT 3 Complete Edition\dirt3_game.exe");
-                        try
-                        {
-                            System.Diagnostics.Process.Start(@"C:\Program Files (x86)\Steam\steamapps\common\DiRT 3 Complete Edition\dirt3_game.exe");
-                            Console.WriteLine("launching Dirt3");
-                        }
-                        catch
-                        {
-                            Console.WriteLine("Not the right Location");
-                        }
-                    }
-                    else
-                    {
-                        Console.WriteLine("Ryan?");
-                        if (Console.ReadLine().ToLower() == "ryan")
-                        {
-                            try
-                            {
-                                System.Diagnostics.Process.Start(@"D:\STEAM\steamapps\common\DiRT 3 Complete Edition\dirt3_game.exe");
-                                Console.WriteLine("launching Dirt3");
-                            }
-                            catch
-                            {
-                                Console.WriteLine("Not the right Location");
-                            }
-                        }
-                        else
-                        {
-                            try
-                            {
-                                System.Diagnostics.Process.Start(@"D:\STEAM\steamapps\common\DiRT 3 Complete Edition\dirt3_game.exe");
-                                Console.WriteLine("launching Dirt3");
-                            }
-                            catch
-                            {
-                                Console.WriteLine("Not the right Location");
-                            }
-                        }
-                    }
+                    Dirt3Launcher(userName);
+                    Dirt3CrashLauncher(userName);
+                }
+                else if (answerLaunchDirt3 == "no" || answerLaunchDirt3 == "n")
+                {
+                    Console.WriteLine("You did not launch dirt 3");
+                    Dirt3CrashLauncher(userName);
                 }
                 else
                 {
-                    Console.WriteLine("You decided not to launch dirt3");
-                }
-                Console.WriteLine("Do you want to launch DiRTTelemetryErrorFix");
-                if (Console.ReadLine().ToLower() == "yes")
-                {
-                    Console.WriteLine("Maarten?");
-                    if (Console.ReadLine().ToLower() == "yes")
-                    {
-                        try
-                        {
-                            System.Diagnostics.Process.Start(@"C:\Users\Maarten Jakobs\Documents\School\Proftaak\Proftaak-Simhub\DiRTTelemetryErrorFix_Release\DiRTTelemetryErrorFix.exe");
-                            Console.WriteLine("launching DiRTTelemetryErrorFix");
-                        }
-                        catch
-                        {
-                            Console.WriteLine("Not the right Location");
-                        }
-                    }
-                    else
-                    {
-                        Console.WriteLine("Ryan?");
-                        if (Console.ReadLine().ToLower() == "yes")
-                        {
-                            try
-                            {
-                                System.Diagnostics.Process.Start(@"D:\proftaak\DiRTTelemetryErrorFix_Release\DiRTTelemetryErrorFix.exe");
-                                Console.WriteLine("launching DiRTTelemetryErrorFix");
-                            }
-                            catch
-                            {
-                                Console.WriteLine("Not the right Location");
-                            }
-                        }
-                        else
-                        {
-                            try
-                            {
-                                System.Diagnostics.Process.Start(@"D:\STEAM\steamapps\common\DiRT 3 Complete Edition\dirt3_game.exe");
-                                Console.WriteLine("launching Dirt3");
-                            }
-                            catch
-                            {
-                                Console.WriteLine("Not the right Location");
-                            }
-                        }
-                    }
-                }
-                else
-                {
-                    Console.WriteLine("You decided not to launch DiRTTelemetryErrorFix");
+                    Console.WriteLine("You dit not enter yes or no exiting startup");
+                    Console.WriteLine("You will still be able to recive data from the game");
+                    startUpTrue = false;
                 }
             }
             else
             {
-                startUpTrue = false;
-                Console.WriteLine("Exiting start up");
+                Console.WriteLine("You did not enter a valid username");
+                Credits();
             }
             #endregion
-            // /\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
-
-            // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-            // Try cleaning up this code
-            // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
-            // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
             #region receive
             IPEndPoint remoteEndPoint = new IPEndPoint(IPAddress.Parse(IP), port);
@@ -191,6 +94,50 @@ namespace ConsoleSimHub
             }
             #endregion
         }
+
+        #region methods used in startup
+        private static void Credits()
+        {
+            Console.WriteLine("\nHave fun with the program");
+            Console.WriteLine("Credits to Maarten Jakobs & Max van den Boom & Ryan van den Broek");
+            Console.WriteLine("CopyRight ROC terAA\n");
+        }
+
+        private static void Dirt3Launcher(string userName)
+        {
+            if (userName == "maarten" || userName == "m")
+            {
+                System.Diagnostics.Process.Start(@"C:\Program Files (x86)\Steam\steamapps\common\DiRT 3 Complete Edition\dirt3_game.exe");
+            }
+            else if (userName == "ryan" || userName == "r")
+            {
+                System.Diagnostics.Process.Start(@"D:\STEAM\steamapps\common\DiRT 3 Complete Edition\dirt3_game.exe");
+            }
+        }
+
+        private static void Dirt3CrashLauncher(string userName)
+        {
+            Console.WriteLine("Do you want to launch the crash fix");
+            string answerDirt3CrashFix = Console.ReadLine().ToLower();
+            if (answerDirt3CrashFix == "yes" || answerDirt3CrashFix == "y")
+            {
+                if (userName == "maarten" || userName == "m")
+                {
+                    System.Diagnostics.Process.Start(@"C:\Users\Maarten Jakobs\Documents\School\Proftaak\Proftaak-Simhub\DiRTTelemetryErrorFix_Release\DiRTTelemetryErrorFix.exe");
+                }
+                else if (userName == "ryan" || userName == "r")
+                {
+                    System.Diagnostics.Process.Start(@"D:\proftaak\DiRTTelemetryErrorFix_Release\DiRTTelemetryErrorFix.exe");
+                }
+                Credits();                
+            }
+            else
+            {
+                Console.WriteLine("You did not launch dirt 3 error fix");
+                Credits();
+            }
+        }
+        #endregion
 
         private static void ReceiveData()
         {
@@ -312,7 +259,7 @@ namespace ConsoleSimHub
 
                     //writes the converted data you get from the game in the console
                     //Console.WriteLine(" Lap Time: " + lapTimeString + " \n Lap: " + round + " \n Total Time: " + totalTimeString + " \n Pos: " + (Math.Round(Position + 1)) + " \n Speed: " + (Math.Round(speed * 3.6, 0)) + " KPH \n RMP: " + Math.Round(RPM * 10, 0) + "\n Gear: " + currentGear + " \n Braking: " + braking + "\n");
-                    
+
                     //if you have decided to enter startup and the comport is open it will start sending data to arduino
                     if (startUpTrue == true)
                     {
