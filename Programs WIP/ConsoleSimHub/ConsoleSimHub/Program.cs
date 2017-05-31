@@ -158,8 +158,8 @@ namespace ConsoleSimHub
                 }
             }
             string breakingChar = "";
-            string gearChar = "";
-            Console.WriteLine(gearChar);
+            string currentGear = "";
+
             UdpClient client = new UdpClient(20777);
             while (true)
             {
@@ -175,7 +175,6 @@ namespace ConsoleSimHub
                     #endregion
 
                     #region Gear
-                    string currentGear;
                     float gearing = BitConverter.ToSingle(dataGame, 132);
                     if (gearing == 0)
                     {
@@ -273,14 +272,21 @@ namespace ConsoleSimHub
                         if (comPortOpen == true)
                         {
                             #region garbage filter
-                            dataToSend[0] = Convert.ToChar("A");
-                            dataToSend[1] = Convert.ToChar("B");
+                            dataToSend[0] = Convert.ToChar("a");
+                            dataToSend[1] = Convert.ToChar("b");
+                            #endregion
+
+                            #region Gear
+                            if (currentGear != "")
+                            {
+                                dataToSend[2] = Convert.ToChar(currentGear);
+                            }
                             #endregion
 
                             #region Brakes
                             if (breakingChar != "")
                             {
-                                dataToSend[2] = Convert.ToChar(breakingChar);
+                                dataToSend[10] = Convert.ToChar(breakingChar);
                             }
                             #endregion
 
@@ -322,12 +328,7 @@ namespace ConsoleSimHub
                             }
                             #endregion
 
-                            #region Gear
-                            if (currentGear != "")
-                            {
-                                dataToSend[10] = Convert.ToChar(currentGear);
-                            }
-                            #endregion
+
 
                             #region Total Time
                             if (timeArray.Count() > 1)
@@ -357,7 +358,7 @@ namespace ConsoleSimHub
                             dataToSend[20] = Convert.ToChar(roundString);
                             #endregion
 
-                            Console.WriteLine(dataToSend[19]);
+                            Console.WriteLine(dataToSend[10]);
 
                             serialPortArduinoConnection.Write(dataToSend, 0, 8);
                         }
