@@ -2,7 +2,7 @@
 // define a module on data pin 8, clock pin 9 and strobe pin 10
 TM1638 module(8, 9, 10);
  unsigned long RpmLeds;
- int RpmMax = 8000;
+ int RpmMax = 9000;
  char m_data[21];
 void setup()
 {
@@ -11,52 +11,48 @@ module.setDisplayToString("S       ");
    delay(500);
    module.setDisplayToString("SI      ");
    delay(500);
-   module.setDisplayToString("SIM     ");
+   module.setDisplayToString("SINN    ");
    delay(500);
-   module.setDisplayToString("SIMH   ");
+   module.setDisplayToString("SINNH  ");
    delay(500);
-   module.setDisplayToString("SIMHU  ");
+   module.setDisplayToString("SINNHU ");
    delay(500);
-   module.setDisplayToString("SIMHUB  ");
+   module.setDisplayToString("SINNHUB ");
    delay(1000);
    module.setDisplayToString("       ");
    delay(500);
-   module.setDisplayToString("SIMHUB  ");
+   module.setDisplayToString("SINNHUB ");
    delay(3000);
 module.setDisplayToString("        ");
 }
  
 void loop()
 {
-  SetOutputPinFromCsharp();
-  delay(1);
-}
-
-void SetOutputPinFromCsharp()
-{
-  int m_receivedValue;
-  
-
   if (Serial.available() > 0)
   {
     Serial.readBytes(m_data, 21);
+    delay(1);
     if (m_data[0] == 97 && m_data[1] == 98)
     {
-//
-//          if (m_data[2] == 65)
-//          {
-//            module.setDisplayToString("breaking");
-//          }
-//          else if( m_data[2] == 66)
-//          {
-//            module.setDisplayToString("        ");
-//          }
-      //Gear();
-      RPM();
+      Gear();
       Speed();
-
+      RPM();
+      //Brakes();
     }
-  }
+    delay(1);
+}
+}
+
+void Brakes()
+{
+          if (m_data[2] == 65)
+          {
+            module.setDisplayToString("breaking");
+          }
+          else if( m_data[2] == 66)
+          {
+            //module.setDisplayToString("        ");
+          }
 }
 void RPM()
 {
@@ -137,7 +133,6 @@ void RPM()
          a= a+900;
       }
 
-
 if (m_data[5] == 49)
       {
         a= a +10;
@@ -212,7 +207,7 @@ if (m_data[5] == 49)
       {
          a= a+9;
       }
-RpmLeds = map(a, 1, RpmMax,1 ,8);
+RpmLeds = map(a, 500, RpmMax,1 ,8);
          if (RpmLeds == 1) { module.setLEDs(0b00000001 | 0b00000000<< 8);} 
          if (RpmLeds == 2) { module.setLEDs(0b00000011 | 0b00000000<< 8);}
          if (RpmLeds == 3) { module.setLEDs(0b00000111 | 0b00000000<< 8);}  
@@ -222,45 +217,50 @@ RpmLeds = map(a, 1, RpmMax,1 ,8);
          if (RpmLeds == 7){ module.setLEDs(0b00011111 | 0b01100000<< 8);}
          if (RpmLeds == 8){ module.setLEDs(0b00011111 | 0b11100000<< 8);}
 }
-void Gear ()
+void Gear()
 {
    if (m_data[2] == 78)
       {
-        module.setDisplayToString("       N");
+        module.setDisplayToString("   N");
       }
       else if (m_data[2] == 82)
       {
-        module.setDisplayToString("       R");
+        module.setDisplayToString("   R");
       }
       else if (m_data[2] == 49)
       {
-        module.setDisplayToString("       1");
+        module.setDisplayToString("   1");
       }
       else if (m_data[2] == 50)
       {
-        module.setDisplayToString("       2");
+        module.setDisplayToString("   2");
       }
       else if (m_data[2] == 51)
       {
-        module.setDisplayToString("       3");
+        module.setDisplayToString("   3");
       }
       else if (m_data[2] == 52)
       {
-        module.setDisplayToString("       4");
+        module.setDisplayToString("   4");
       }
       else if (m_data[2] == 53)
       {
-        module.setDisplayToString("       5");
+        module.setDisplayToString("   5");
       }
       else if (m_data[2] == 54)
       {
-        module.setDisplayToString("       6");
+        module.setDisplayToString("   6");
       }
+      delay(1);
 }
 void Speed()
 {
   int a = 0;
-      if (m_data[7] == 49)
+      if(m_data[7] == 48)
+      {
+        a= + 000;
+      }
+      else if (m_data[7] == 49)
       {
         a= a+100;
       }
@@ -268,10 +268,14 @@ void Speed()
       {
         a= a+200;
       }
+      
 
 
-
-      if (m_data[8] == 49)
+      if (m_data[8] == 48)
+      {
+        a = a+00;
+      }
+      else if (m_data[8] == 49)
       {
         a= a +10;
       }

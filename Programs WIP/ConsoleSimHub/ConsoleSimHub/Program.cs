@@ -297,12 +297,7 @@ namespace ConsoleSimHub
                                 dataToSend[8] = speedArray[1];
                                 dataToSend[9] = speedArray[2];
                             }
-                            else if (speedArray.Count() > 1)
-                            {
-                                dataToSend[7] = Convert.ToChar("0");
-                                dataToSend[8] = speedArray[0];
-                                dataToSend[9] = speedArray[1];
-                            }
+
                             else
                             {
                                 dataToSend[7] = Convert.ToChar("0");
