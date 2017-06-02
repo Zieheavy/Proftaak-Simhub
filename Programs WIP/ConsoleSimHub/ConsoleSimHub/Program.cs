@@ -311,26 +311,26 @@ namespace ConsoleSimHub
                         #endregion
 
                         //this will send the data from the Speed to arduino in asqii
-                        //#region Speed
-                        //if (speedArray.Count() > 2)
-                        //{
-                        //    dataToSend[3] = speedArray[0];
-                        //    dataToSend[4] = speedArray[1];
-                        //    dataToSend[5] = speedArray[2];
-                        //}
-                        //else if (speedArray.Count() > 1)
-                        //{
-                        //    dataToSend[3] = Convert.ToChar("0");
-                        //    dataToSend[4] = speedArray[0];
-                        //    dataToSend[5] = speedArray[1];
-                        //}
-                        //else
-                        //{
-                        //    dataToSend[3] = Convert.ToChar("0");
-                        //    dataToSend[4] = Convert.ToChar("0");
-                        //    dataToSend[5] = Convert.ToChar("0");
-                        //}
-                        //#endregion
+                        #region Speed
+                        if (speedArray.Count() > 2)
+                        {
+                            dataToSend[7] = speedArray[0];
+                            dataToSend[8] = speedArray[1];
+                            dataToSend[9] = speedArray[2];
+                        }
+                        else if (speedArray.Count() > 1)
+                        {
+                            dataToSend[7] = Convert.ToChar("0");
+                            dataToSend[8] = speedArray[0];
+                            dataToSend[9] = speedArray[1];
+                        }
+                        else
+                        {
+                            dataToSend[7] = Convert.ToChar("0");
+                            dataToSend[8] = Convert.ToChar("0");
+                            dataToSend[9] = Convert.ToChar("0");
+                        }
+                        #endregion
 
                         //this will send the data from the RPM to arduino in asqii
                         #region RPM
@@ -387,8 +387,7 @@ namespace ConsoleSimHub
 
                         //this will send the data from the round to arduino in asqii
                         #region Round
-                        dataToSend[20] = Convert.ToChar(roundString);
-                        Console.Write(dataToSend[3] + " " + dataToSend[4] + " " + dataToSend[5]);
+                        dataToSend[10] = Convert.ToChar(roundString);
                         #endregion
 
                         //this will send all the data in the array and arduino receives it as a asqii number
