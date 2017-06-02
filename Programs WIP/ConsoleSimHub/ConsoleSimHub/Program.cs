@@ -31,7 +31,7 @@ namespace ConsoleSimHub
             string userName = Console.ReadLine().ToLower();
             Console.WriteLine("please select you comport");
             comPort = "COM" + Console.ReadLine();
-            if (userName == "ryan" || userName == "r" || userName == "maarten" || userName == "m")
+            if (userName == "ryan" || userName == "r" || userName == "maarten" || userName == "m" || userName == "simhub" || userName == "s")
             {
                 Console.WriteLine("Welcome " + userName + ". Do you want to launch dirt 3");
                 string answerLaunchDirt3 = Console.ReadLine().ToLower();
@@ -112,6 +112,10 @@ namespace ConsoleSimHub
             {
                 System.Diagnostics.Process.Start(@"D:\STEAM\steamapps\common\DiRT 3 Complete Edition\dirt3_game.exe");
             }
+            else if (userName == "simhub" || userName == "s")
+            {
+                System.Diagnostics.Process.Start(@"C:\Users\steam\steamapps\common\DiRT 3 Complete Edition\dirt3_game.exe");
+            }
         }
 
         private static void Dirt3CrashLauncher(string userName)
@@ -127,6 +131,10 @@ namespace ConsoleSimHub
                 else if (userName == "ryan" || userName == "r")
                 {
                     System.Diagnostics.Process.Start(@"D:\proftaak\DiRTTelemetryErrorFix_Release\DiRTTelemetryErrorFix.exe");
+                }
+                else if (userName == "simhub" || userName == "s")
+                {
+                    System.Diagnostics.Process.Start(@"C:\Users\SimHub\Desktop\Proftaak\DiRTTelemetryErrorFix_Release\DiRTTelemetryErrorFix.exe");
                 }
                 Credits();
             }
