@@ -311,83 +311,84 @@ namespace ConsoleSimHub
                         #endregion
 
                         //this will send the data from the Speed to arduino in asqii
-                        #region Speed
-                        if (speedArray.Count() > 2)
-                        {
-                            dataToSend[3] = speedArray[0];
-                            dataToSend[4] = speedArray[1];
-                            dataToSend[5] = speedArray[2];
-                        }
-                        else if (speedArray.Count() > 1)
-                        {
-                            dataToSend[3] = Convert.ToChar("0");
-                            dataToSend[4] = speedArray[0];
-                            dataToSend[5] = speedArray[1];
-                        }
-                        else
-                        {
-                            dataToSend[3] = Convert.ToChar("0");
-                            dataToSend[4] = Convert.ToChar("0");
-                            dataToSend[5] = Convert.ToChar("0");
-                        }
-                        #endregion
+                        //#region Speed
+                        //if (speedArray.Count() > 2)
+                        //{
+                        //    dataToSend[3] = speedArray[0];
+                        //    dataToSend[4] = speedArray[1];
+                        //    dataToSend[5] = speedArray[2];
+                        //}
+                        //else if (speedArray.Count() > 1)
+                        //{
+                        //    dataToSend[3] = Convert.ToChar("0");
+                        //    dataToSend[4] = speedArray[0];
+                        //    dataToSend[5] = speedArray[1];
+                        //}
+                        //else
+                        //{
+                        //    dataToSend[3] = Convert.ToChar("0");
+                        //    dataToSend[4] = Convert.ToChar("0");
+                        //    dataToSend[5] = Convert.ToChar("0");
+                        //}
+                        //#endregion
 
                         //this will send the data from the RPM to arduino in asqii
                         #region RPM
                         if (Convert.ToInt16(RPMString) > 1000)
                         {
-                            dataToSend[6] = RPMArray[0];
-                            dataToSend[7] = RPMArray[1];
-                            dataToSend[8] = RPMArray[2];
-                            dataToSend[9] = RPMArray[3];
+                            dataToSend[3] = RPMArray[0];
+                            dataToSend[4] = RPMArray[1];
+                            dataToSend[5] = RPMArray[2];
+                            dataToSend[6] = RPMArray[3];
                         }
                         else
                         {
+                            dataToSend[3] = Convert.ToChar(0);
+                            dataToSend[4] = Convert.ToChar(0);
+                            dataToSend[5] = Convert.ToChar(0);
                             dataToSend[6] = Convert.ToChar(0);
-                            dataToSend[7] = Convert.ToChar(0);
-                            dataToSend[8] = Convert.ToChar(0);
-                            dataToSend[9] = Convert.ToChar(0);
                         }
                         #endregion
 
                         //this will send the data from the brakes to arduino in asqii
-                        #region Brakes
-                        if (breakingChar != "")
-                        {
-                            dataToSend[10] = Convert.ToChar(breakingChar);
-                        }
-                        #endregion
+                        //#region Brakes
+                        //if (breakingChar != "")
+                        //{
+                        //    dataToSend[10] = Convert.ToChar(breakingChar);
+                        //}
+                        //#endregion
 
-                        //this will send the data from the totaltime to arduino in asqii
-                        #region Total Time
-                        if (timeArray.Count() > 1)
-                        {
-                            dataToSend[11] = timeArray[0];
-                            dataToSend[12] = timeArray[1];
-                            dataToSend[13] = timeArray[3];
-                            dataToSend[14] = timeArray[4];
-                        }
-                        #endregion
+                        ////this will send the data from the totaltime to arduino in asqii
+                        //#region Total Time
+                        //if (timeArray.Count() > 1)
+                        //{
+                        //    dataToSend[11] = timeArray[0];
+                        //    dataToSend[12] = timeArray[1];
+                        //    dataToSend[13] = timeArray[3];
+                        //    dataToSend[14] = timeArray[4];
+                        //}
+                        //#endregion
 
-                        //this will send the data from the roundtime to arduino in asqii
-                        #region Round Time
-                        if (roundTimeArray.Count() > 1)
-                        {
-                            dataToSend[15] = roundTimeArray[0];
-                            dataToSend[16] = roundTimeArray[1];
-                            dataToSend[17] = roundTimeArray[3];
-                            dataToSend[18] = roundTimeArray[4];
-                        }
-                        #endregion
+                        ////this will send the data from the roundtime to arduino in asqii
+                        //#region Round Time
+                        //if (roundTimeArray.Count() > 1)
+                        //{
+                        //    dataToSend[15] = roundTimeArray[0];
+                        //    dataToSend[16] = roundTimeArray[1];
+                        //    dataToSend[17] = roundTimeArray[3];
+                        //    dataToSend[18] = roundTimeArray[4];
+                        //}
+                        //#endregion
 
-                        //this will send the data from the position to arduino in asqii
-                        #region Position
-                        dataToSend[19] = Convert.ToChar(PositionString);
-                        #endregion
+                        ////this will send the data from the position to arduino in asqii
+                        //#region Position
+                        //dataToSend[19] = Convert.ToChar(PositionString);
+                        //#endregion
 
                         //this will send the data from the round to arduino in asqii
                         #region Round
                         dataToSend[20] = Convert.ToChar(roundString);
+                        Console.Write(dataToSend[3] + " " + dataToSend[4] + " " + dataToSend[5]);
                         #endregion
 
                         //this will send all the data in the array and arduino receives it as a asqii number
