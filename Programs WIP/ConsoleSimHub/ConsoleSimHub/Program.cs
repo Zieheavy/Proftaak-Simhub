@@ -19,12 +19,10 @@ namespace ConsoleSimHub
     {
         //global variables
         static string comPort = "";
-        static bool startUpTrue = true;
         static bool comPortOpen = false;
 
         private static void Main()
         {
-
             string IP = "127.0.0.1";
             int port = 20777;
 
@@ -51,7 +49,6 @@ namespace ConsoleSimHub
                 {
                     Console.WriteLine("You dit not enter yes or no exiting startup");
                     Console.WriteLine("You will still be able to recive data from the game");
-                    startUpTrue = false;
                 }
             }
             else
@@ -79,6 +76,7 @@ namespace ConsoleSimHub
 
                     if (text.Length != 0)
                     {
+                        //gets the bytes from the game and puts them in this array
                         byte[] data = Encoding.UTF8.GetBytes(text);
                         client.Send(data, data.Length, remoteEndPoint);
                     }
@@ -86,6 +84,7 @@ namespace ConsoleSimHub
             }
             catch (Exception err)
             {
+                //writes the error to the console
                 Console.WriteLine(err.ToString());
             }
             finally
@@ -129,7 +128,7 @@ namespace ConsoleSimHub
                 {
                     System.Diagnostics.Process.Start(@"D:\proftaak\DiRTTelemetryErrorFix_Release\DiRTTelemetryErrorFix.exe");
                 }
-                Credits();                
+                Credits();
             }
             else
             {
@@ -143,24 +142,23 @@ namespace ConsoleSimHub
         {
             //initiallize connection with arduino
             SerialPort serialPortArduinoConnection = new SerialPort();
-            if (startUpTrue == true)
+            try
             {
-                try
-                {
-                    //checks if the comport is open
-                    serialPortArduinoConnection.PortName = comPort;
-                    serialPortArduinoConnection.Open();
-                    comPortOpen = true;
-                }
-                catch
-                {
-                    Console.WriteLine("Comport is not avalible");
-                }
+                //checks if the comport is open
+                serialPortArduinoConnection.PortName = comPort;
+                serialPortArduinoConnection.Open();
+                comPortOpen = true;
             }
+            catch
+            {
+                Console.WriteLine("Comport is not avalible");
+            }
+
             string breakingChar = "";
             string currentGear = "";
 
             UdpClient client = new UdpClient(20777);
+            //this loop will make sure it continuously takes data from the game and also continuously sends data to arduino
             while (true)
             {
                 try
@@ -169,13 +167,17 @@ namespace ConsoleSimHub
                     IPEndPoint anyIP = new IPEndPoint(IPAddress.Any, 20777);
                     byte[] dataGame = client.Receive(ref anyIP);
 
+                    #region get data out of game
+                    //this gets the round data out of the game and puts it in a variable
                     #region Round
                     float round = BitConverter.ToSingle(dataGame, 144) + 1;
                     string roundString = Convert.ToString(round);
                     #endregion
 
+                    //this gets the gear data out of the game and puts it in a variable
                     #region Gear
                     float gearing = BitConverter.ToSingle(dataGame, 132);
+
                     if (gearing == 0)
                     {
                         currentGear = "N";
@@ -214,16 +216,19 @@ namespace ConsoleSimHub
                     }
                     #endregion
 
+                    //this gets the speed data out of the game and puts it in a variable
                     #region Speed
                     float speed = BitConverter.ToSingle(dataGame, 28);
                     string speedString = Convert.ToString(Math.Round(speed * 3.6, 0));
                     #endregion
 
+                    //this gets the RPM data out of the game and puts it in a variable
                     #region RPM
                     float RPM = BitConverter.ToSingle(dataGame, 148);
                     string RPMString = Convert.ToString(Math.Round(RPM * 10));
                     #endregion
 
+                    //this gets the brakes data out of the game and puts it in a variable
                     #region Brake
                     bool braking = false;
                     float brakes = BitConverter.ToSingle(dataGame, 124);
@@ -239,133 +244,154 @@ namespace ConsoleSimHub
                     }
                     #endregion
 
+                    //this gets the total time data out of the game and puts it in a variable
                     #region Total Time
                     float totalTime = BitConverter.ToSingle(dataGame, 0);
-                    TimeSpan resultTotalTime = TimeSpan.FromSeconds(totalTime - 13);
+                    TimeSpan resultTotalTime = TimeSpan.FromSeconds(totalTime);
                     string totalTimeString = resultTotalTime.ToString("mm':'ss");
                     #endregion
 
+                    //this gets the lap time data out of the game and puts it in a variable
                     #region Lap Time
                     float lapTime = BitConverter.ToSingle(dataGame, 4);
                     TimeSpan resultLapTime = TimeSpan.FromSeconds(totalTime - 13);
                     string lapTimeString = resultLapTime.ToString("mm':'ss");
                     #endregion
 
+                    //this gets the position data out of the game and puts it in a variable
                     #region Position
                     float Position = BitConverter.ToSingle(dataGame, 144);
                     string PositionString = Convert.ToString(Position + 1);
                     #endregion
+                    #endregion
 
                     //writes the converted data you get from the game in the console
-                    //Console.WriteLine(" Lap Time: " + lapTimeString + " \n Lap: " + round + " \n Total Time: " + totalTimeString + " \n Pos: " + (Math.Round(Position + 1)) + " \n Speed: " + (Math.Round(speed * 3.6, 0)) + " KPH \n RMP: " + Math.Round(RPM * 10, 0) + "\n Gear: " + currentGear + " \n Braking: " + braking + "\n");
+                    Console.WriteLine(" Lap Time: " + lapTimeString +
+                                      " \n Lap: " + round +
+                                      " \n Total Time: " + totalTimeString +
+                                      " \n Pos: " + (Math.Round(Position + 1)) +
+                                      " \n Speed: " + (Math.Round(speed * 3.6, 0)) +
+                                      " KPH \n RMP: " + Math.Round(RPM * 10, 0) +
+                                      "\n Gear: " + currentGear +
+                                      " \n Braking: " + braking + "\n");
 
                     //if you have decided to enter startup and the comport is open it will start sending data to arduino
-                    if (startUpTrue == true)
+                    //turns the string values in seperated numbers or letters
+                    var speedArray = speedString.ToCharArray();
+                    var RPMArray = RPMString.ToCharArray();
+                    var timeArray = totalTimeString.ToCharArray();
+                    var roundTimeArray = lapTimeString.ToCharArray();
+
+                    //this is the array that will be filled and send to the arduino
+                    char[] dataToSend = new char[21];
+
+                    //will only happend if the comports is availible
+                    if (comPortOpen == true)
                     {
-                        var speedArray = speedString.ToCharArray();
-                        var RPMArray = RPMString.ToCharArray();
-                        var timeArray = totalTimeString.ToCharArray();
-                        var roundTimeArray = lapTimeString.ToCharArray();
+                        #region data to send to arduino
+                        //this will make sure it starts reading from this line of code and that static will not be received
+                        #region garbage filter
+                        dataToSend[0] = Convert.ToChar("a");
+                        dataToSend[1] = Convert.ToChar("b");
+                        #endregion
 
-                        char[] dataToSend = new char[21];
-
-                        if (comPortOpen == true)
+                        //this will send the data from the gear to arduino in asqii
+                        #region Gear
+                        if (currentGear != "")
                         {
-                            #region garbage filter
-                            dataToSend[0] = Convert.ToChar("a");
-                            dataToSend[1] = Convert.ToChar("b");
-                            #endregion
-
-                            #region Gear
-                            if (currentGear != "")
-                            {
-                                dataToSend[2] = Convert.ToChar(currentGear);
-                            }
-                            #endregion
-
-                            #region Brakes
-                            if (breakingChar != "")
-                            {
-                                dataToSend[10] = Convert.ToChar(breakingChar);
-                            }
-                            #endregion
-
-                            #region Speed
-                            if (speedArray.Count() > 2)
-                            {
-                                dataToSend[3] = speedArray[0];
-                                dataToSend[4] = speedArray[1];
-                                dataToSend[5] = speedArray[2];
-                            }
-                            else if (speedArray.Count() > 1)
-                            {
-                                dataToSend[3] = Convert.ToChar("0");
-                                dataToSend[4] = speedArray[0];
-                                dataToSend[5] = speedArray[1];
-                            }
-                            else
-                            {
-                                dataToSend[3] = Convert.ToChar("0");
-                                dataToSend[4] = Convert.ToChar("0");
-                                dataToSend[5] = Convert.ToChar("0");
-                            }
-                            #endregion
-
-                            #region RPM
-                            if (Convert.ToInt16(RPMString) > 1000)
-                            {
-                                dataToSend[6] = RPMArray[0];
-                                dataToSend[7] = RPMArray[1];
-                                dataToSend[8] = RPMArray[2];
-                                dataToSend[9] = RPMArray[3];
-                            }
-                            else
-                            {
-                                dataToSend[6] = Convert.ToChar(0);
-                                dataToSend[7] = Convert.ToChar(0);
-                                dataToSend[8] = Convert.ToChar(0);
-                                dataToSend[9] = Convert.ToChar(0);
-                            }
-                            #endregion
-
-
-
-                            #region Total Time
-                            if (timeArray.Count() > 1)
-                            {
-                                dataToSend[11] = timeArray[0];
-                                dataToSend[12] = timeArray[1];
-                                dataToSend[13] = timeArray[3];
-                                dataToSend[14] = timeArray[4];
-                            }
-                            #endregion
-
-                            #region Round Time
-                            if (roundTimeArray.Count() > 1)
-                            {
-                                dataToSend[15] = roundTimeArray[0];
-                                dataToSend[16] = roundTimeArray[1];
-                                dataToSend[17] = roundTimeArray[3];
-                                dataToSend[18] = roundTimeArray[4];
-                            }
-                            #endregion
-
-                            #region Position
-                            dataToSend[19] = Convert.ToChar(PositionString);
-                            #endregion
-
-                            #region Round
-                            dataToSend[20] = Convert.ToChar(roundString);
-                            #endregion
-
-                            Console.WriteLine(dataToSend[2]);
-
-                            serialPortArduinoConnection.Write(dataToSend, 0, 8);
+                            dataToSend[2] = Convert.ToChar(currentGear);
                         }
+                        #endregion
+
+                        //this will send the data from the Speed to arduino in asqii
+                        #region Speed
+                        if (speedArray.Count() > 2)
+                        {
+                            dataToSend[3] = speedArray[0];
+                            dataToSend[4] = speedArray[1];
+                            dataToSend[5] = speedArray[2];
+                        }
+                        else if (speedArray.Count() > 1)
+                        {
+                            dataToSend[3] = Convert.ToChar("0");
+                            dataToSend[4] = speedArray[0];
+                            dataToSend[5] = speedArray[1];
+                        }
+                        else
+                        {
+                            dataToSend[3] = Convert.ToChar("0");
+                            dataToSend[4] = Convert.ToChar("0");
+                            dataToSend[5] = Convert.ToChar("0");
+                        }
+                        #endregion
+
+                        //this will send the data from the RPM to arduino in asqii
+                        #region RPM
+                        if (Convert.ToInt16(RPMString) > 1000)
+                        {
+                            dataToSend[6] = RPMArray[0];
+                            dataToSend[7] = RPMArray[1];
+                            dataToSend[8] = RPMArray[2];
+                            dataToSend[9] = RPMArray[3];
+                        }
+                        else
+                        {
+                            dataToSend[6] = Convert.ToChar(0);
+                            dataToSend[7] = Convert.ToChar(0);
+                            dataToSend[8] = Convert.ToChar(0);
+                            dataToSend[9] = Convert.ToChar(0);
+                        }
+                        #endregion
+
+                        //this will send the data from the brakes to arduino in asqii
+                        #region Brakes
+                        if (breakingChar != "")
+                        {
+                            dataToSend[10] = Convert.ToChar(breakingChar);
+                        }
+                        #endregion
+
+                        //this will send the data from the totaltime to arduino in asqii
+                        #region Total Time
+                        if (timeArray.Count() > 1)
+                        {
+                            dataToSend[11] = timeArray[0];
+                            dataToSend[12] = timeArray[1];
+                            dataToSend[13] = timeArray[3];
+                            dataToSend[14] = timeArray[4];
+                        }
+                        #endregion
+
+                        //this will send the data from the roundtime to arduino in asqii
+                        #region Round Time
+                        if (roundTimeArray.Count() > 1)
+                        {
+                            dataToSend[15] = roundTimeArray[0];
+                            dataToSend[16] = roundTimeArray[1];
+                            dataToSend[17] = roundTimeArray[3];
+                            dataToSend[18] = roundTimeArray[4];
+                        }
+                        #endregion
+
+                        //this will send the data from the position to arduino in asqii
+                        #region Position
+                        dataToSend[19] = Convert.ToChar(PositionString);
+                        #endregion
+
+                        //this will send the data from the round to arduino in asqii
+                        #region Round
+                        dataToSend[20] = Convert.ToChar(roundString);
+                        #endregion
+
+                        //this will send all the data in the array and arduino receives it as a asqii number
+                        serialPortArduinoConnection.Write(dataToSend, 0, 8);
+                        Console.WriteLine(dataToSend[2]);
+                        #endregion
                     }
                 }
                 catch (Exception err)
                 {
+                    //writes the error you get to the console
                     Console.WriteLine(err.ToString());
                 }
             }
