@@ -97,8 +97,7 @@ namespace ConsoleSimHub
         #region methods used in startup
         private static void Credits()
         {
-            Console.WriteLine("\nHave fun with the program");
-            Console.WriteLine("Credits to Maarten Jakobs & Max van den Boom & Ryan van den Broek");
+            Console.WriteLine("\nCredits to Maarten Jakobs & Max van den Boom & Ryan van den Broek");
             Console.WriteLine("CopyRight ROC terAA\n");
         }
 
