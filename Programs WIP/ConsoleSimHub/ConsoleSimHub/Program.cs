@@ -393,7 +393,6 @@ namespace ConsoleSimHub
 
                         //this will send all the data in the array and arduino receives it as a asqii number
                         serialPortArduinoConnection.Write(dataToSend, 0, 8);
-                        Console.WriteLine(dataToSend[2]);
                         #endregion
                     }
                 }
