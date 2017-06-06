@@ -4,26 +4,18 @@ TM1638 module(8, 9, 10);
  unsigned long RpmLeds;
  int RpmMax = 9000;
  char m_data[21];
+
+
+String Gear;
+String Speed100;
+String Speed10;
+String Speed1;
+String cRound;
+ 
 void setup()
 {
   Serial.begin(9600);
-module.setDisplayToString("S       ");
-   delay(500);
-   module.setDisplayToString("SI      ");
-   delay(500);
-   module.setDisplayToString("SINN    ");
-   delay(500);
-   module.setDisplayToString("SINNH  ");
-   delay(500);
-   module.setDisplayToString("SINNHU ");
-   delay(500);
-   module.setDisplayToString("SINNHUB ");
-   delay(1000);
-   module.setDisplayToString("       ");
-   delay(500);
-   module.setDisplayToString("SINNHUB ");
-   delay(3000);
-module.setDisplayToString("        ");
+//Welcome();
 }
  
 void loop()
@@ -31,15 +23,15 @@ void loop()
   if (Serial.available() > 0)
   {
     Serial.readBytes(m_data, 21);
-    delay(1);
     if (m_data[0] == 97 && m_data[1] == 98)
     {
-      Gear();
+      Gears();
       Speed();
+      //Round();
       RPM();
       //Brakes();
+       module.setDisplayToString(Gear+" "+Speed100+Speed10+Speed1+" "+cRound);
     }
-    delay(1);
 }
 }
 
@@ -56,158 +48,14 @@ void Brakes()
 }
 void RPM()
 {
-  int a = 0;
-      if (m_data[3] == 49)
-      {
-        a= a+1000;
-      }
-      else if (m_data[3] == 50)
-      {
-        a= a+2000;
-      }
-      else if (m_data[3] == 51)
-      {
-         a= a+3000;
-      }
-      else if (m_data[3] == 52)
-      {
-         a= a+4000;
-      }
-      else if (m_data[3] == 53)
-      {
-         a= a+5000;
-      }
-      else if (m_data[3] == 54)
-      {
-        a= a+6000;
-      }
-      else if (m_data[3] == 55)
-      {
-         a= a+7000;
-      }
-      else if (m_data[3] == 56)
-      {
-         a= a+8000;
-      }
-      else if (m_data[3] == 57)
-      {
-         a= a+9000;
-      }
+  int a = (m_data[3] -48)*1000;
+  int b = (m_data[4] -48)*100;
+  int c = (m_data[5] -48)*10;
+  int d = m_data[6] -48;
 
+  int e = a+b+c+d;
 
-
-      if (m_data[4] == 49)
-      {
-        a= a +100;
-      }
-      else if (m_data[4] == 50)
-      {
-        a= a +200;
-      }
-      else if (m_data[4] == 51)
-      {
-         a= a+300;
-      }
-      else if (m_data[4] == 52)
-      {
-         a= a+400;
-      }
-      else if (m_data[4] == 53)
-      {
-         a= a+500;
-      }
-      else if (m_data[4] == 54)
-      {
-        a= a+600;
-      }
-      else if (m_data[4] == 55)
-      {
-         a= a+700;
-      }
-      else if (m_data[4] == 56)
-      {
-         a= a+800;
-      }
-      else if (m_data[4] == 57)
-      {
-         a= a+900;
-      }
-
-if (m_data[5] == 49)
-      {
-        a= a +10;
-      }
-      else if (m_data[5] == 50)
-      {
-        a= a +20;
-      }
-      else if (m_data[5] == 51)
-      {
-         a= a+30;
-      }
-      else if (m_data[5] == 52)
-      {
-         a= a+40;
-      }
-      else if (m_data[5] == 53)
-      {
-         a= a+50;
-      }
-      else if (m_data[5] == 54)
-      {
-        a= a+60;
-      }
-      else if (m_data[5] == 55)
-      {
-         a= a+70;
-      }
-      else if (m_data[5] == 56)
-      {
-         a= a+80;
-      }
-      else if (m_data[5] == 57)
-      {
-         a= a+90;
-      }
-
-
-      if (m_data[6] == 49)
-      {
-        a= a +1;
-      }
-      else if (m_data[6] == 50)
-      {
-        a= a +2;
-      }
-      else if (m_data[6] == 51)
-      {
-         a= a+3;
-      }
-      else if (m_data[6] == 52)
-      {
-         a= a+4;
-      }
-      else if (m_data[6] == 53)
-      {
-         a= a+5;
-      }
-      else if (m_data[6] == 54)
-      {
-        a= a+6;
-      }
-      else if (m_data[6] == 55)
-      {
-         a= a+7;
-      }
-      else if (m_data[6] == 56)
-      {
-         a= a+8;
-      }
-      else if (m_data[6] == 57)
-      {
-         a= a+9;
-      }
-RpmLeds = map(a, 500, RpmMax,1 ,8);
+RpmLeds = map(e, 500, RpmMax,1 ,8);
          if (RpmLeds == 1) { module.setLEDs(0b00000001 | 0b00000000<< 8);} 
          if (RpmLeds == 2) { module.setLEDs(0b00000011 | 0b00000000<< 8);}
          if (RpmLeds == 3) { module.setLEDs(0b00000111 | 0b00000000<< 8);}  
@@ -217,138 +65,120 @@ RpmLeds = map(a, 500, RpmMax,1 ,8);
          if (RpmLeds == 7){ module.setLEDs(0b00011111 | 0b01100000<< 8);}
          if (RpmLeds == 8){ module.setLEDs(0b00011111 | 0b11100000<< 8);}
 }
-void Gear()
+void Gears()
 {
    if (m_data[2] == 78)
       {
-        module.setDisplayToString("   N");
+        Gear = "N";
       }
       else if (m_data[2] == 82)
       {
-        module.setDisplayToString("   R");
+        Gear = "R";
       }
-      else if (m_data[2] == 49)
+      else
       {
-        module.setDisplayToString("   1");
+        Gear = String(m_data[2] -48);
+     
       }
-      else if (m_data[2] == 50)
-      {
-        module.setDisplayToString("   2");
-      }
-      else if (m_data[2] == 51)
-      {
-        module.setDisplayToString("   3");
-      }
-      else if (m_data[2] == 52)
-      {
-        module.setDisplayToString("   4");
-      }
-      else if (m_data[2] == 53)
-      {
-        module.setDisplayToString("   5");
-      }
-      else if (m_data[2] == 54)
-      {
-        module.setDisplayToString("   6");
-      }
-      delay(1);
 }
 void Speed()
 {
-  int a = 0;
-      if(m_data[7] == 48)
-      {
-        a= + 000;
-      }
-      else if (m_data[7] == 49)
-      {
-        a= a+100;
-      }
-      else if (m_data[7] == 50)
-      {
-        a= a+200;
-      }
-      
+      Speed100 = String(m_data[7]-48);
+      Speed10 = String(m_data[8] -48);
+      Speed1 = String(m_data[9] -48);
+}
+void Round()
+{
+      cRound = String(m_data[1]-48);
 
-
-      if (m_data[8] == 48)
-      {
-        a = a+00;
-      }
-      else if (m_data[8] == 49)
-      {
-        a= a +10;
-      }
-      else if (m_data[8] == 50)
-      {
-        a= a +20;
-      }
-      else if (m_data[8] == 51)
-      {
-         a= a+30;
-      }
-      else if (m_data[8] == 52)
-      {
-         a= a+40;
-      }
-      else if (m_data[8] == 53)
-      {
-         a= a+50;
-      }
-      else if (m_data[8] == 54)
-      {
-        a= a+60;
-      }
-      else if (m_data[8] == 55)
-      {
-         a= a+70;
-      }
-      else if (m_data[8] == 56)
-      {
-         a= a+80;
-      }
-      else if (m_data[8] == 57)
-      {
-         a= a+90;
-      }
-
-
-if (m_data[9] == 49)
-      {
-        a= a +1;
-      }
-      else if (m_data[9] == 50)
-      {
-        a= a +2;
-      }
-      else if (m_data[9] == 51)
-      {
-         a= a+3;
-      }
-      else if (m_data[9] == 52)
-      {
-         a= a+4;
-      }
-      else if (m_data[9] == 53)
-      {
-         a= a+5;
-      }
-      else if (m_data[9] == 54)
-      {
-        a= a+6;
-      }
-      else if (m_data[9] == 55)
-      {
-         a= a+7;
-      }
-      else if (m_data[9] == 56)
-      {
-         a= a+8;
-      }
-      else if (m_data[9] == 57)
-      {
-         a= a+9;
-      }
-
-         module.setDisplayToDecNumber(a, 0, false);  //displays numerical the Speed 
+}
+void Welcome() {
+  int Delay = 300;
+  module.setDisplayToString("        W");
+  module.setLEDs           (128);
+  delay(Delay);
+  module.setDisplayToString("       WE");
+  module.setLEDs           (64);
+  delay(Delay);
+  module.setDisplayToString("      WEL");
+  module.setLEDs           (160);
+  delay(Delay);
+  module.setDisplayToString("     WELC");
+  module.setLEDs           (80);
+  delay(Delay);
+  module.setDisplayToString("    WELCO");
+  module.setLEDs           (168);
+  delay(Delay);
+  module.setDisplayToString("   WELCOM");
+  module.setLEDs           (84);
+  delay(Delay);
+  module.setDisplayToString("  WELCOME");
+  module.setLEDs           (170);
+  delay(Delay);
+  module.setDisplayToString(" WELCOME ");
+  module.setLEDs           (85);
+  delay(Delay);
+  module.setDisplayToString("WELCOME  ");
+  module.setLEDs           (170);
+  delay(Delay);
+  module.setDisplayToString("ELCOME T");
+  module.setLEDs           (85);
+  delay(Delay);
+  module.setDisplayToString("LCOME TO");
+  module.setLEDs           (170);
+  delay(Delay);
+  module.setDisplayToString("COME TO ");
+  module.setLEDs           (85);
+  delay(Delay);
+  module.setDisplayToString("OME TO  ");
+  module.setLEDs           (170);
+  delay(Delay);
+  module.setDisplayToString("ME TO  S");
+  module.setLEDs           (85);
+  delay(Delay);
+  module.setDisplayToString("E TO  SI");
+  module.setLEDs           (42);
+  delay(Delay);
+  module.setDisplayToString(" TO  SIM");
+  module.setLEDs           (21);
+  delay(Delay);
+  module.setDisplayToString("TO  SIMH");
+  module.setLEDs           (10);
+  delay(Delay);
+  module.setDisplayToString("O  SIMHU");
+  module.setLEDs           (5);
+  delay(Delay);
+  module.setDisplayToString("  SIMHUB");
+  module.setLEDs           (2);
+  delay(Delay);
+  module.setDisplayToString(" SIMHUB ");
+  module.setLEDs           (1);
+  delay(Delay);
+  module.setDisplayToString("        ");
+  module.setLEDs           (0);
+  delay(Delay);
+  module.setDisplayToString(" SIMHUB ");
+  module.setLEDs           (65280);
+  delay(Delay);
+  module.setDisplayToString("        ");
+  module.setLEDs           (255);
+  delay(Delay);
+  module.setDisplayToString(" SIMHUB ");
+  module.setLEDs           (65280);
+  delay(Delay);
+  module.setDisplayToString("        ");
+  module.setLEDs           (255);
+  delay(Delay);
+  module.setDisplayToString(" SIMHUB ");
+  module.setLEDs           (65280);
+  delay(Delay);
+  module.setDisplayToString("        ");
+  module.setLEDs           (255);
+  delay(Delay);
+  module.setDisplayToString(" SIMHUB ");
+  module.setLEDs           (65280);
+  delay(Delay);
+  delay(Delay);
+  delay(Delay);
+  delay(Delay);
 }

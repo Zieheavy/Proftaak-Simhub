@@ -273,14 +273,14 @@ namespace ConsoleSimHub
                     #endregion
 
                     //writes the converted data you get from the game in the console
-                    Console.WriteLine(" Lap Time: " + lapTimeString +
-                                      " \n Lap: " + round +
-                                      " \n Total Time: " + totalTimeString +
-                                      " \n Pos: " + (Math.Round(Position + 1)) +
-                                      " \n Speed: " + (Math.Round(speed * 3.6, 0)) +
-                                      " KPH \n RMP: " + Math.Round(RPM * 10, 0) +
-                                      "\n Gear: " + currentGear +
-                                      " \n Braking: " + braking + "\n");
+                    //Console.WriteLine(" Lap Time: " + lapTimeString +
+                    //                  " \n Lap: " + round +
+                    //                  " \n Total Time: " + totalTimeString +
+                    //                  " \n Pos: " + (Math.Round(Position + 1)) +
+                    //                  " \n Speed: " + (Math.Round(speed * 3.6, 0)) +
+                    //                  " KPH \n RMP: " + Math.Round(RPM * 10, 0) +
+                    //                  "\n Gear: " + currentGear +
+                    //                  " \n Braking: " + braking + "\n");
 
 
                     //if you have decided to enter startup and the comport is open it will start sending data to arduino
@@ -382,14 +382,15 @@ namespace ConsoleSimHub
                         //#endregion
 
                         ////this will send the data from the position to arduino in asqii
-                        //#region Position
-                        //dataToSend[19] = Convert.ToChar(PositionString);
-                        //#endregion
+                        #region Position
+                        dataToSend[19] = Convert.ToChar(PositionString);
+                        #endregion
 
                         //this will send the data from the round to arduino in asqii
                         #region Round
                         dataToSend[10] = Convert.ToChar(roundString);
                         #endregion
+                        Console.WriteLine(dataToSend[8]);
 
                         //this will send all the data in the array and arduino receives it as a asqii number
                         serialPortArduinoConnection.Write(dataToSend, 0, 8);
