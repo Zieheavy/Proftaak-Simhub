@@ -23,15 +23,17 @@ int count = 0;
 void setup()
 {
   Serial.begin(9600);
-  //Welcome();
+  Welcome();
 }
 
 void loop()
 {
   count++;
+  
   tTime();
   Speed();
   Breaking();
+  
   if (Serial.available() > 0)
   {
     Serial.readBytes(m_data, 12);
@@ -45,7 +47,6 @@ void loop()
   {
     module.setDisplayToString("  Idle  ");
   }
-  
 }
 
 void tTime()
@@ -61,7 +62,7 @@ void Speed()
 {
   Speed100 = char(m_data[6]);
   Speed10 = char(m_data[7]);
-  Speed1 = char(m_data[8]); // String(m_data[9] -48);
+  Speed1 = char(m_data[8]);
 }
 
 void Breaking()
@@ -76,4 +77,93 @@ void Breaking()
   }
 }
 
-
+void Welcome() {
+  int Delay = 300;
+  module.setDisplayToString("        W");
+  module.setLEDs           (128);
+  delay(Delay);
+  module.setDisplayToString("       WE");
+  module.setLEDs           (64);
+  delay(Delay);
+  module.setDisplayToString("      WEL");
+  module.setLEDs           (160);
+  delay(Delay);
+  module.setDisplayToString("     WELC");
+  module.setLEDs           (80);
+  delay(Delay);
+  module.setDisplayToString("    WELCO");
+  module.setLEDs           (168);
+  delay(Delay);
+  module.setDisplayToString("   WELCOM");
+  module.setLEDs           (84);
+  delay(Delay);
+  module.setDisplayToString("  WELCOME");
+  module.setLEDs           (170);
+  delay(Delay);
+  module.setDisplayToString(" WELCOME ");
+  module.setLEDs           (85);
+  delay(Delay);
+  module.setDisplayToString("WELCOME  ");
+  module.setLEDs           (170);
+  delay(Delay);
+  module.setDisplayToString("ELCOME T");
+  module.setLEDs           (85);
+  delay(Delay);
+  module.setDisplayToString("LCOME TO");
+  module.setLEDs           (170);
+  delay(Delay);
+  module.setDisplayToString("COME TO ");
+  module.setLEDs           (85);
+  delay(Delay);
+  module.setDisplayToString("OME TO  ");
+  module.setLEDs           (170);
+  delay(Delay);
+  module.setDisplayToString("ME TO  S");
+  module.setLEDs           (85);
+  delay(Delay);
+  module.setDisplayToString("E TO  SI");
+  module.setLEDs           (42);
+  delay(Delay);
+  module.setDisplayToString(" TO  SIM");
+  module.setLEDs           (21);
+  delay(Delay);
+  module.setDisplayToString("TO  SIMH");
+  module.setLEDs           (10);
+  delay(Delay);
+  module.setDisplayToString("O  SIMHU");
+  module.setLEDs           (5);
+  delay(Delay);
+  module.setDisplayToString("  SIMHUB");
+  module.setLEDs           (2);
+  delay(Delay);
+  module.setDisplayToString(" SIMHUB ");
+  module.setLEDs           (1);
+  delay(Delay);
+  module.setDisplayToString("        ");
+  module.setLEDs           (0);
+  delay(Delay);
+  module.setDisplayToString(" SIMHUB ");
+  module.setLEDs           (65280);
+  delay(Delay);
+  module.setDisplayToString("        ");
+  module.setLEDs           (255);
+  delay(Delay);
+  module.setDisplayToString(" SIMHUB ");
+  module.setLEDs           (65280);
+  delay(Delay);
+  module.setDisplayToString("        ");
+  module.setLEDs           (255);
+  delay(Delay);
+  module.setDisplayToString(" SIMHUB ");
+  module.setLEDs           (65280);
+  delay(Delay);
+  module.setDisplayToString("        ");
+  module.setLEDs           (255);
+  delay(Delay);
+  module.setDisplayToString(" SIMHUB ");
+  module.setLEDs           (65280);
+  delay(Delay);
+  delay(Delay);
+  delay(Delay);
+  delay(Delay);
+}

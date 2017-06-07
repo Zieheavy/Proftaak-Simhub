@@ -18,7 +18,7 @@ int count = 0;
 void setup()
 {
   Serial.begin(9600);
-  //Welcome();
+  Welcome();
 }
 
 void loop()
@@ -42,17 +42,6 @@ void loop()
   }
 }
 
-void Brakes()
-{
-  if (m_data[2] == 65)
-  {
-    module.setDisplayToString("breaking");
-  }
-  else if ( m_data[2] == 66)
-  {
-    //module.setDisplayToString("        ");
-  }
-}
 void RPM()
 {
   int a = (m_data[3] - 48) * 1000;
@@ -88,6 +77,7 @@ void RPM()
     module.setLEDs(0b00011111 | 0b11100000 << 8);
   }
 }
+
 void Gears()
 {
   if (m_data[2] == 78)
@@ -101,9 +91,9 @@ void Gears()
   else
   {
     Gear = String(m_data[2] - 48);
-
   }
 }
+
 void cTime()
 {
   cTimeM1 = char(m_data[7]);
@@ -111,10 +101,12 @@ void cTime()
   cTimeS1 = char(m_data[9]);
   cTimeS2 = char(m_data[10]);
 }
+
 void Round()
 {
   cRound = String(m_data[11] - 48);
 }
+
 void Welcome() {
   int Delay = 300;
   module.setDisplayToString("        W");
