@@ -226,15 +226,15 @@ namespace ConsoleSimHub
                     //this gets the speed data out of the game and puts it in a variable
                     #region Speed
                     float speed = BitConverter.ToSingle(dataGame, 28);
-                    string speedString = Convert.ToString(Math.Round(speed * 3.6, 0));
+                    string speedString =((int)Math.Round(speed * 3.6, 0)).ToString("000");
                     #endregion
 
                     //this gets the RPM data out of the game and puts it in a variable
                     #region RPM
                     float RPM = BitConverter.ToSingle(dataGame, 148);
-                    string RPMString = Convert.ToString(Math.Round(RPM * 10));
+                    string RPMString = ((int)(Math.Round(RPM * 10))).ToString("0000");
                     #endregion
-
+                    
                     //this gets the brakes data out of the game and puts it in a variable
                     #region Brake
                     bool braking = false;
@@ -313,42 +313,18 @@ namespace ConsoleSimHub
 
                         //this will send the data from the Speed to arduino in asqii
                         #region Speed
-                        if (speedArray.Count() > 2)
-                        {
                             dataToSend[7] = speedArray[0];
                             dataToSend[8] = speedArray[1];
                             dataToSend[9] = speedArray[2];
-                        }
-                        else if (speedArray.Count() > 1)
-                        {
-                            dataToSend[7] = Convert.ToChar("0");
-                            dataToSend[8] = speedArray[0];
-                            dataToSend[9] = speedArray[1];
-                        }
-                        else
-                        {
-                            dataToSend[7] = Convert.ToChar("0");
-                            dataToSend[8] = Convert.ToChar("0");
-                            dataToSend[9] = Convert.ToChar("0");
-                        }
                         #endregion
 
                         //this will send the data from the RPM to arduino in asqii
                         #region RPM
-                        if (Convert.ToInt16(RPMString) > 1000)
-                        {
                             dataToSend[3] = RPMArray[0];
                             dataToSend[4] = RPMArray[1];
                             dataToSend[5] = RPMArray[2];
                             dataToSend[6] = RPMArray[3];
-                        }
-                        else
-                        {
-                            dataToSend[3] = Convert.ToChar(0);
-                            dataToSend[4] = Convert.ToChar(0);
-                            dataToSend[5] = Convert.ToChar(0);
-                            dataToSend[6] = Convert.ToChar(0);
-                        }
+
                         #endregion
 
                         //this will send the data from the brakes to arduino in asqii
@@ -393,7 +369,7 @@ namespace ConsoleSimHub
                         Console.WriteLine(dataToSend[8]);
 
                         //this will send all the data in the array and arduino receives it as a asqii number
-                        serialPortArduinoConnection.Write(dataToSend, 0, 8);
+                        serialPortArduinoConnection.Write(dataToSend, 0, dataToSend.Length);
                         #endregion
                     }
                 }

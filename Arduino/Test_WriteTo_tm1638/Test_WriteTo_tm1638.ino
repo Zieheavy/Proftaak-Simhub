@@ -1,96 +1,112 @@
 #include <TM1638.h>
 // define a module on data pin 8, clock pin 9 and strobe pin 10
 TM1638 module(8, 9, 10);
- unsigned long RpmLeds;
- int RpmMax = 9000;
- char m_data[21];
+unsigned long RpmLeds;
+int RpmMax = 9000;
+char m_data[21];
+
 
 
 String Gear;
-String Speed100;
-String Speed10;
-String Speed1;
+char Speed100;
+char Speed10;
+char Speed1;
 String cRound;
- 
+
 void setup()
 {
   Serial.begin(9600);
-//Welcome();
+  //Welcome();
 }
- 
+
 void loop()
 {
+
   if (Serial.available() > 0)
   {
     Serial.readBytes(m_data, 21);
     if (m_data[0] == 97 && m_data[1] == 98)
     {
-      Gears();
-      Speed();
-      //Round();
       RPM();
-      //Brakes();
-       module.setDisplayToString(Gear+" "+Speed100+Speed10+Speed1+" "+cRound);
+        Gears();
+        Speed();
+        Round();
+        module.setDisplayToString(Gear + " " + Speed100 + Speed10 + Speed1 + "  " + cRound);
     }
-}
+  }
 }
 
 void Brakes()
 {
-          if (m_data[2] == 65)
-          {
-            module.setDisplayToString("breaking");
-          }
-          else if( m_data[2] == 66)
-          {
-            //module.setDisplayToString("        ");
-          }
+  if (m_data[2] == 65)
+  {
+    module.setDisplayToString("breaking");
+  }
+  else if ( m_data[2] == 66)
+  {
+    //module.setDisplayToString("        ");
+  }
 }
 void RPM()
 {
-  int a = (m_data[3] -48)*1000;
-  int b = (m_data[4] -48)*100;
-  int c = (m_data[5] -48)*10;
-  int d = m_data[6] -48;
+  int a = (m_data[3] - 48) * 1000;
+  int b = (m_data[4] - 48) * 100;
+  int c = (m_data[5] - 48) * 10;
+  int d = m_data[6] - 48;
 
-  int e = a+b+c+d;
+  int e = a + b + c + d;
 
-RpmLeds = map(e, 500, RpmMax,1 ,8);
-         if (RpmLeds == 1) { module.setLEDs(0b00000001 | 0b00000000<< 8);} 
-         if (RpmLeds == 2) { module.setLEDs(0b00000011 | 0b00000000<< 8);}
-         if (RpmLeds == 3) { module.setLEDs(0b00000111 | 0b00000000<< 8);}  
-         if (RpmLeds == 4) { module.setLEDs(0b00001111 | 0b00000000<< 8);}
-         if (RpmLeds == 5){ module.setLEDs(0b00011111 | 0b00000000<< 8);}
-         if (RpmLeds == 6){ module.setLEDs(0b00011111 | 0b00100000<< 8);}
-         if (RpmLeds == 7){ module.setLEDs(0b00011111 | 0b01100000<< 8);}
-         if (RpmLeds == 8){ module.setLEDs(0b00011111 | 0b11100000<< 8);}
+  RpmLeds = map(e, 500, RpmMax, 1 , 8);
+  if (RpmLeds == 1) {
+    module.setLEDs(0b00000001 | 0b00000000 << 8);
+  }
+  if (RpmLeds == 2) {
+    module.setLEDs(0b00000011 | 0b00000000 << 8);
+  }
+  if (RpmLeds == 3) {
+    module.setLEDs(0b00000111 | 0b00000000 << 8);
+  }
+  if (RpmLeds == 4) {
+    module.setLEDs(0b00001111 | 0b00000000 << 8);
+  }
+  if (RpmLeds == 5) {
+    module.setLEDs(0b00011111 | 0b00000000 << 8);
+  }
+  if (RpmLeds == 6) {
+    module.setLEDs(0b00011111 | 0b00100000 << 8);
+  }
+  if (RpmLeds == 7) {
+    module.setLEDs(0b00011111 | 0b01100000 << 8);
+  }
+  if (RpmLeds == 8) {
+    module.setLEDs(0b00011111 | 0b11100000 << 8);
+  }
 }
 void Gears()
 {
-   if (m_data[2] == 78)
-      {
-        Gear = "N";
-      }
-      else if (m_data[2] == 82)
-      {
-        Gear = "R";
-      }
-      else
-      {
-        Gear = String(m_data[2] -48);
-     
-      }
+  if (m_data[2] == 78)
+  {
+    Gear = "N";
+  }
+  else if (m_data[2] == 82)
+  {
+    Gear = "R";
+  }
+  else
+  {
+    Gear = String(m_data[2] - 48);
+
+  }
 }
 void Speed()
 {
-      Speed100 = String(m_data[7]-48);
-      Speed10 = String(m_data[8] -48);
-      Speed1 = String(m_data[9] -48);
+  Speed100 = char(m_data[7]);
+  Speed10 = char(m_data[8]);//String(m_data[8] -48);
+  Speed1 = char(m_data[9]); // String(m_data[9] -48);
 }
 void Round()
 {
-      cRound = String(m_data[1]-48);
-
+  cRound = String(m_data[10] - 48);
 }
 void Welcome() {
   int Delay = 300;
