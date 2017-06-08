@@ -17,9 +17,11 @@ namespace ConsoleSimHub
 {
     class zProgram
     {
-        //global variables
+        //this will get filled with the comports in use
         static string comPort = "";
         static string comPort2 = "";
+
+        //this will get set to true if the comport is availible
         static bool comPortOpen = false;
         static bool comPort2Open = false;
 
@@ -29,15 +31,37 @@ namespace ConsoleSimHub
             int port = 20777;
 
             #region startup
+            //aks for username so that i can change startup location from dirt 3
             Console.WriteLine("UserName");
             string userName = Console.ReadLine().ToLower();
+
+            //ask for the 2 comports in use
             Console.WriteLine("please select you comport");
             comPort = "COM" + Console.ReadLine();
             Console.WriteLine("please select you second comport");
             comPort2 = "COM" + Console.ReadLine();
-            if (userName == "ryan" || userName == "r" || userName == "maarten" || userName == "m" || userName == "simhub" || userName == "s")
+
+            if (userName == "r" || userName == "m" || userName == "s")
             {
+                if (userName == "r")
+                {
+                    userName = "ryan";
+                }
+                else if (userName == "m")
+                {
+                    userName = "maarten";
+                }
+                else
+                {
+                    userName = "simhub";
+                }
+            }
+            if (userName == "ryan" ||  userName == "maarten" ||  userName == "simhub" )
+            {
+                //welcomes the user logged in
+                Console.ForegroundColor = ConsoleColor.Green;
                 Console.WriteLine("Welcome " + userName + ". Do you want to launch dirt 3");
+
                 string answerLaunchDirt3 = Console.ReadLine().ToLower();
                 if (answerLaunchDirt3 == "yes" || answerLaunchDirt3 == "y")
                 {
@@ -163,6 +187,7 @@ namespace ConsoleSimHub
             }
             catch
             {
+                Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("Comport is not avalible");
             }
             #endregion
@@ -178,6 +203,7 @@ namespace ConsoleSimHub
             }
             catch
             {
+                Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("Comport 2 is not avalible");
             }
             #endregion
@@ -188,6 +214,9 @@ namespace ConsoleSimHub
 
             UdpClient client = new UdpClient(20777);
             //this loop will make sure it continuously takes data from the game and also continuously sends data to arduino
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            Console.WriteLine("Starting debug information");
+            Console.ResetColor();
             while (true)
             {
                 try

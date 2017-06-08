@@ -3,20 +3,16 @@
 TM1638 module(8, 9, 10);
 char m_data[15];
 
-
-
 String tTimeM1;
 String tTimeM2;
 String tTimeS1;
 String tTimeS2;
-
 
 char Speed100;
 char Speed10;
 char Speed1;
 
 String pos;
-int a;
 
 int count = 0;
 
@@ -28,24 +24,30 @@ void setup()
 
 void loop()
 {
+  //every loop counts up
   count++;
-  
-  tTime();
-  Speed();
-  Breaking();
+  //happents when the counter gets above 10
+  if (count > 10)
+  {
+    module.setDisplayToString("  Idle  ");
+  }
   
   if (Serial.available() > 0)
   {
     Serial.readBytes(m_data, 12);
     if (m_data[0] == 97 && m_data[1] == 98)
     {
+      //reset count so that the program will never go in idle
       count = 0;
-      module.setDisplayToString(tTimeM1 + tTimeM2 + tTimeS1 + tTimeS2 + " " + Speed100 + Speed10 + Speed1,64,false);
+
+      //methods that get information from c# and puts it in variables
+      tTime();
+      Speed();
+      Breaking();
+
+      //writes information to the tm1638 digit displays
+      module.setDisplayToString(tTimeM1 + tTimeM2 + tTimeS1 + tTimeS2 + " " + Speed100 + Speed10 + Speed1, 64, false);
     }
-  }
-  if(count > 10)
-  {
-    module.setDisplayToString("  Idle  ");
   }
 }
 
@@ -67,16 +69,17 @@ void Speed()
 
 void Breaking()
 {
-  if(m_data[9] == 65)
+  if (m_data[9] == 65)
   {
     module.setLEDs(65280);
   }
   else if (m_data[9] == 66)
   {
-    module.setLEDs(0);    
+    module.setLEDs(0);
   }
 }
 
+//welcome screen that happents in the setup from the arduino
 void Welcome() {
   int Delay = 300;
   module.setDisplayToString("        W");
@@ -162,8 +165,5 @@ void Welcome() {
   delay(Delay);
   module.setDisplayToString(" SIMHUB ");
   module.setLEDs           (65280);
-  delay(Delay);
-  delay(Delay);
-  delay(Delay);
   delay(Delay);
 }

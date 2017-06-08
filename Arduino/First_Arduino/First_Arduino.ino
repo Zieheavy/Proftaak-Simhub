@@ -1,9 +1,10 @@
 #include <TM1638.h>
 // define a module on data pin 8, clock pin 9 and strobe pin 10
 TM1638 module(8, 9, 10);
+char m_data[15];
+
 unsigned long RpmLeds;
 int RpmMax =  7000;
-char m_data[15];
 
 String cTimeM1 = "";
 String cTimeM2 = "";
@@ -11,34 +12,43 @@ String cTimeS1 = "";
 String cTimeS2 = "";
 
 String Gear;
+
 String cRound;
 
 int count = 0;
 
 void setup()
 {
-  Serial.begin(9600);
+  Serial.begin(9600); 
   Welcome();
 }
 
 void loop()
 {
+  //every loop counts up
   count++;
+  //happents when the counter gets above 10
+  if(count > 10)
+  {
+    module.setDisplayToString("  idle  ");
+  }
+  
   if (Serial.available() > 0)
   {
     Serial.readBytes(m_data, 12);
     if (m_data[0] == 97 && m_data[1] == 98)
     {
+      //reset count so that the program will never go in idle
       count = 0;
+
+      //methods that get information from c# and puts it in variables
       cTime();
       RPM();
       Gears();
+
+      //writes information to the tm1638 digit displays
       module.setDisplayToString(Gear + " " + cTimeM1 + cTimeM2 + cTimeS1 + cTimeS2 + "  " + cRound);
     }
-  }
-  if(count > 10)
-  {
-    module.setDisplayToString("  idle  ");
   }
 }
 
@@ -51,6 +61,7 @@ void RPM()
 
   int e = a + b + c + d;
 
+  //controls the lights on the tm1638 display
   RpmLeds = map(e, 500, RpmMax, 1 , 8);
   if (RpmLeds == 1) {
     module.setLEDs(0b00000001 | 0b00000000 << 8);
@@ -107,6 +118,7 @@ void Round()
   cRound = String(m_data[11] - 48);
 }
 
+//welcome screen that happents in the setup from the arduino
 void Welcome() {
   int Delay = 300;
   module.setDisplayToString("        W");
@@ -192,8 +204,5 @@ void Welcome() {
   delay(Delay);
   module.setDisplayToString(" SIMHUB ");
   module.setLEDs           (65280);
-  delay(Delay);
-  delay(Delay);
-  delay(Delay);
   delay(Delay);
 }
