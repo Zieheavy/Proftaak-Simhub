@@ -56,10 +56,9 @@ namespace ConsoleSimHub
                     userName = "simhub";
                 }
             }
-            if (userName == "ryan" ||  userName == "maarten" ||  userName == "simhub" )
+            if (userName == "ryan" ||  userName == "maarten" ||  userName == "simhub" || userName == "max")
             {
                 //welcomes the user logged in
-                Console.ForegroundColor = ConsoleColor.Green;
                 Console.WriteLine("Welcome " + userName + ". Do you want to launch dirt 3");
 
                 string answerLaunchDirt3 = Console.ReadLine().ToLower();
@@ -126,7 +125,8 @@ namespace ConsoleSimHub
         #region methods used in startup
         private static void Credits()
         {
-            Console.WriteLine("\nCredits to Maarten Jakobs & Max van den Boom & Ryan van den Broek");
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine("\nCredits to Maarten Jakobs, Max van den Boom & Ryan van den Broek");
             Console.WriteLine("CopyRight ROC terAA\n");
         }
 
@@ -143,6 +143,10 @@ namespace ConsoleSimHub
             else if (userName == "simhub" || userName == "s")
             {
                 System.Diagnostics.Process.Start(@"C:\Users\steam\steamapps\common\DiRT 3 Complete Edition\dirt3_game.exe");
+            }
+            else if (userName == "max")
+            {
+                System.Diagnostics.Process.Start(@"C:\Program Files (x86)\Steam\steamapps\common\DiRT 3 Complete Edition\dirt3_game.exe");
             }
         }
 
@@ -163,6 +167,10 @@ namespace ConsoleSimHub
                 else if (userName == "simhub" || userName == "s")
                 {
                     System.Diagnostics.Process.Start(@"C:\Users\SimHub\Desktop\Proftaak\DiRTTelemetryErrorFix_Release\DiRTTelemetryErrorFix.exe");
+                }
+                else if (userName == "max")
+                {
+                    System.Diagnostics.Process.Start(@"C:\Users\max\Desktop\Proftaak\git\Proftaak-Simhub\DiRTTelemetryErrorFix_Release\DiRTTelemetryErrorFix.exe");
                 }
                 Credits();
             }
@@ -188,7 +196,7 @@ namespace ConsoleSimHub
             catch
             {
                 Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine("Comport is not avalible");
+                Console.WriteLine(comPort + " is not avalible\n");
             }
             #endregion
 
@@ -204,7 +212,7 @@ namespace ConsoleSimHub
             catch
             {
                 Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine("Comport 2 is not avalible");
+                Console.WriteLine(comPort2 + " is not avalible\n");
             }
             #endregion
 
