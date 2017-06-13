@@ -34,6 +34,13 @@ namespace ConsoleSimHub_MK2
         static SerialPort serialPortArduinoConnection = new SerialPort();
         static UdpClient client = new UdpClient(20777);
 
+        static string roundString;
+        static string speedString;
+        static string RPMString;
+        static string lapTimeString;
+        static string totalTimeString;
+        static float brakes;
+
         private static void Main()
         {
             string IP = "127.0.0.1";
@@ -229,10 +236,12 @@ namespace ConsoleSimHub_MK2
             Console.ResetColor();
 
 
-            Timer t = new Timer(TimerCallback, null, 0, 1000);
+
+            Timer t = new Timer(TimerCallback, null, 0, 1);
+            Timer t2 = new Timer(TimerCallback2, null, 0, 1000);
 
         }
-
+        #region Get Data ( Timer 1 )
         private static void TimerCallback(Object o)
         {
             try
@@ -245,7 +254,7 @@ namespace ConsoleSimHub_MK2
                 //this gets the round data out of the game and puts it in a variable
                 #region Round
                 float round = BitConverter.ToSingle(dataGame, 144) + 1;
-                string roundString = Convert.ToString(round);
+                roundString = Convert.ToString(round);
                 #endregion
 
                 //this gets the gear data out of the game and puts it in a variable
@@ -293,19 +302,19 @@ namespace ConsoleSimHub_MK2
                 //this gets the speed data out of the game and puts it in a variable
                 #region Speed
                 float speed = BitConverter.ToSingle(dataGame, 28);
-                string speedString = ((int)Math.Round(speed * 3.6, 0)).ToString("000");
+                speedString = ((int)Math.Round(speed * 3.6, 0)).ToString("000");
                 #endregion
 
                 //this gets the RPM data out of the game and puts it in a variable
                 #region RPM
                 float RPM = BitConverter.ToSingle(dataGame, 148);
-                string RPMString = ((int)(Math.Round(RPM * 10))).ToString("0000");
+                RPMString = ((int)(Math.Round(RPM * 10))).ToString("0000");
                 #endregion
 
                 //this gets the brakes data out of the game and puts it in a variable
                 #region Brake
                 bool braking = false;
-                float brakes = BitConverter.ToSingle(dataGame, 124);
+                brakes = BitConverter.ToSingle(dataGame, 124);
                 if (brakes != 0)
                 {
                     braking = true;
@@ -322,14 +331,14 @@ namespace ConsoleSimHub_MK2
                 #region Total Time
                 float totalTime = BitConverter.ToSingle(dataGame, 0);
                 TimeSpan resultTotalTime = TimeSpan.FromSeconds(totalTime - 3);
-                string totalTimeString = resultTotalTime.ToString("mm':'ss");
+                totalTimeString = resultTotalTime.ToString("mm':'ss");
                 #endregion
 
                 //this gets the lap time data out of the game and puts it in a variable
                 #region Lap Time
                 float lapTime = BitConverter.ToSingle(dataGame, 4);
                 TimeSpan resultLapTime = TimeSpan.FromSeconds(lapTime);
-                string lapTimeString = resultLapTime.ToString("mm':'ss");
+                lapTimeString = resultLapTime.ToString("mm':'ss");
                 #endregion
                 #endregion
 
@@ -342,7 +351,19 @@ namespace ConsoleSimHub_MK2
                                   "\n Gear: " + currentGear +
                                   " \n Braking: " + braking + "\n");
 
-
+            }
+            catch (Exception err)
+            {
+                //writes the error you get to the console
+                Console.WriteLine(err.ToString());
+            }
+        }
+        #endregion
+        #region Send Data ( Timer 2 )
+        private static void TimerCallback2(Object o)
+        {
+            try
+            {
                 //if you have decided to enter startup and the comport is open it will start sending data to arduino
                 //turns the string values in seperated numbers or letters
                 var speedArray = speedString.ToCharArray();
@@ -353,7 +374,6 @@ namespace ConsoleSimHub_MK2
                 //this is the array that will be filled and send to the arduino
                 char[] dataToSend = new char[12];
                 char[] dataToSend2 = new char[12];
-
                 //will only happend if the comports is availible
                 if (comPortOpen == true)
                 {
@@ -439,11 +459,11 @@ namespace ConsoleSimHub_MK2
                     #endregion
                 }
             }
-            catch (Exception err)
+            catch
             {
-                //writes the error you get to the console
-                Console.WriteLine(err.ToString());
             }
         }
+        #endregion 
     }
+
 }
