@@ -190,7 +190,7 @@ namespace ConsoleSimHub
             {
                 //checks if the comport is open
                 serialPortArduinoConnection.PortName = comPort;
-                serialPortArduinoConnection.WriteBufferSize = 10000;
+                serialPortArduinoConnection.WriteBufferSize = 100000;
                 serialPortArduinoConnection.Open();
                 comPortOpen = true;
             }
