@@ -229,7 +229,7 @@ namespace ConsoleSimHub_MK2
             Console.ResetColor();
 
 
-            Timer t = new Timer(TimerCallback, null, 0, 100);
+            Timer t = new Timer(TimerCallback, null, 0, 1000);
 
         }
 

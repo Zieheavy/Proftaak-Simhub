@@ -190,6 +190,7 @@ namespace ConsoleSimHub
             {
                 //checks if the comport is open
                 serialPortArduinoConnection.PortName = comPort;
+                serialPortArduinoConnection.WriteBufferSize = 10000;
                 serialPortArduinoConnection.Open();
                 comPortOpen = true;
             }
@@ -389,6 +390,7 @@ namespace ConsoleSimHub
 
                         //this will send all the data in the array and arduino receives it as a asqii number
                         serialPortArduinoConnection.Write(dataToSend, 0, dataToSend.Length);
+
                         #endregion
                     }
 
@@ -424,7 +426,6 @@ namespace ConsoleSimHub
                         dataToSend2[9] = Convert.ToChar(breakingChar);
                         #endregion
 
-                        Console.WriteLine(dataToSend2[9]);
 
                         //this will send all the data in the array and arduino receives it as a asqii number
                         serialPortArduinoConnection2.Write(dataToSend2, 0, dataToSend2.Length);
