@@ -26,13 +26,13 @@ void setup()
 void loop()
 {
   //every loop counts up
-  count++;
+//  count++;
   //happents when the counter gets above 10
-  if(count > 50000)
-  {
-    module.setDisplayToString("  idle  ");
-  }
-  
+//  if(count > 100)
+//  {
+//    module.setDisplayToString("  idle  ");
+//  }
+//  
   if (Serial.available() > 0)
   {
     Serial.readBytes(m_data, 12);
