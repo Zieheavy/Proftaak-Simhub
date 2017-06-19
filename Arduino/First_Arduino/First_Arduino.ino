@@ -4,7 +4,7 @@ TM1638 module(8, 9, 10);
 char m_data[15];
 
 unsigned long RpmLeds;
-int RpmMax =  7000;
+int RpmMax =  8000;
 
 String cTimeM1 = "";
 String cTimeM2 = "";
@@ -25,13 +25,13 @@ void setup()
 
 void loop()
 {
-  //every loop counts up
-//  count++;
-  //happents when the counter gets above 10
-//  if(count > 100)
-//  {
-//    module.setDisplayToString("  idle  ");
-//  }
+//  every loop counts up
+  count++;
+//  happents when the counter gets above 10
+  if(count > 50000)
+  {
+    module.setDisplayToString(" PAUSED ");
+  }
 //  
   if (Serial.available() > 0)
   {
@@ -45,9 +45,10 @@ void loop()
       cTime();
       RPM();
       Gears();
-
+      Round();
+      
       //writes information to the tm1638 digit displays
-      module.setDisplayToString(Gear + " " + cTimeM1 + cTimeM2 + cTimeS1 + cTimeS2 + "  " + cRound);
+      module.setDisplayToString(Gear + " " + cTimeM1 + cTimeM2 + cTimeS1 + cTimeS2 + " " + cRound);
     }
   }
 }

@@ -20,7 +20,7 @@
       <PdhCountersRate>500</PdhCountersRate>
       <PdhCounters>
         <PdhCounter>\Fysieke schijf(_Total)\Gemiddelde wachtrijlengte voor schijf</PdhCounter>
-        <PdhCounter>\Geheugen\Pagina&amp;amp;amp;#39;s per seconde</PdhCounter>
+        <PdhCounter>\Geheugen\Pagina&amp;amp;amp;amp;amp;#39;s per seconde</PdhCounter>
         <PdhCounter>\Processor(_Total)\Percentage processortijd</PdhCounter>
       </PdhCounters>
     </PdhSettings>
@@ -70,6 +70,9 @@
   <Reports>
     <Report>
       <Path>ConsoleSimHub170613.vsp</Path>
+    </Report>
+    <Report>
+      <Path>ConsoleSimHub170616.vsp</Path>
     </Report>
   </Reports>
   <Launches>

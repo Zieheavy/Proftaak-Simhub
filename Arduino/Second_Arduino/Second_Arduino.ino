@@ -25,12 +25,12 @@ void setup()
 void loop()
 {
   //every loop counts up
-//  count++;
-//  //happents when the counter gets above 10
-//  if (count > 10)
-//  {
-//    module.setDisplayToString("  Idle  ");
-//  }
+  count++;
+  //happents when the counter gets above 10
+  if (count > 50000)
+  {
+    module.setDisplayToString(" PAUSED ");
+  }
   
   if (Serial.available() > 0)
   {

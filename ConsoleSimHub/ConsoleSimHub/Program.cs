@@ -105,7 +105,6 @@ namespace ConsoleSimHub
                     {
                         //gets the bytes from the game and puts them in this array
                         byte[] data = Encoding.UTF8.GetBytes(text);
-                        client.Send(data, data.Length, remoteEndPoint);
                     }
                 }
                 while (text.Length != 0);
@@ -190,12 +189,13 @@ namespace ConsoleSimHub
             {
                 //checks if the comport is open
                 serialPortArduinoConnection.PortName = comPort;
-                serialPortArduinoConnection.WriteBufferSize = 100000;
+                serialPortArduinoConnection.WriteTimeout = 1;
                 serialPortArduinoConnection.Open();
                 comPortOpen = true;
             }
-            catch
+            catch (Exception err)
             {
+                Console.WriteLine(err.ToString());
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine(comPort + " is not available\n");
             }
@@ -207,11 +207,14 @@ namespace ConsoleSimHub
             {
                 //checks if the comport is open
                 serialPortArduinoConnection2.PortName = comPort2;
+                serialPortArduinoConnection2.WriteTimeout = 1;
                 serialPortArduinoConnection2.Open();
                 comPort2Open = true;
             }
-            catch
+            catch (Exception err)
             {
+                //writes the error you get to the console
+                Console.WriteLine(err.ToString());
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine(comPort2 + " is not available\n");
             }
@@ -269,12 +272,15 @@ namespace ConsoleSimHub
                     Arduino1(serialPortArduinoConnection, currentGear, roundString, RPMArray, roundTimeArray, dataToSend);
 
                     Arduino2(serialPortArduinoConnection2, breakingChar, speedArray, timeArray, dataToSend2);
+
+
                 }
                 catch (Exception err)
                 {
-                    //writes the error you get to the console
-                    Console.WriteLine(err.ToString());
+                    //writes the error you get to the consol
+                    //Console.WriteLine(err.ToString());
                 }
+
             }
         }
 
@@ -316,14 +322,13 @@ namespace ConsoleSimHub
                 }
                 #endregion
 
-                //this will send the data from the round to arduino in asqii
+                //this will send the data from the round to arduino in asqiir
                 #region Round
                 dataToSend[11] = Convert.ToChar(roundString);
                 #endregion
 
                 //this will send all the data in the array and arduino receives it as a asqii number
                 serialPortArduinoConnection.Write(dataToSend, 0, dataToSend.Length);
-
                 #endregion
             }
         }
