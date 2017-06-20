@@ -28,7 +28,7 @@ void loop()
 //  every loop counts up
   count++;
 //  happents when the counter gets above 10
-  if(count > 50000)
+  if(count > 10000)
   {
     module.setDisplayToString(" PAUSED ");
   }
